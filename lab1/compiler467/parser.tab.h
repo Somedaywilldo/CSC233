@@ -60,30 +60,32 @@
      DIV = 276,
      POW = 277,
      ASSIGN = 278,
-     BTRUE = 279,
-     BFALSE = 280,
-     NOT = 281,
-     AND = 282,
-     OR = 283,
-     EQ = 284,
-     NEQ = 285,
-     LT = 286,
-     LE = 287,
-     GT = 288,
-     GE = 289,
-     LP = 290,
-     RP = 291,
-     LB = 292,
-     RB = 293,
-     LBR = 294,
-     RBR = 295,
-     IF = 296,
-     ELSE = 297,
-     WHILE = 298,
-     CONST = 299,
-     ID = 300,
-     SEMI = 301,
-     COMMA = 302
+     TRUE_V = 279,
+     FALSE_V = 280,
+     INT_V = 281,
+     FLOAT_V = 282,
+     NOT = 283,
+     AND = 284,
+     OR = 285,
+     EQ = 286,
+     NEQ = 287,
+     LT = 288,
+     LE = 289,
+     GT = 290,
+     GE = 291,
+     LP = 292,
+     RP = 293,
+     LB = 294,
+     RB = 295,
+     LBR = 296,
+     RBR = 297,
+     IF = 298,
+     ELSE = 299,
+     WHILE = 300,
+     CONST = 301,
+     ID = 302,
+     SEMI = 303,
+     COMMA = 304
    };
 #endif
 /* Tokens.  */
@@ -108,30 +110,32 @@
 #define DIV 276
 #define POW 277
 #define ASSIGN 278
-#define BTRUE 279
-#define BFALSE 280
-#define NOT 281
-#define AND 282
-#define OR 283
-#define EQ 284
-#define NEQ 285
-#define LT 286
-#define LE 287
-#define GT 288
-#define GE 289
-#define LP 290
-#define RP 291
-#define LB 292
-#define RB 293
-#define LBR 294
-#define RBR 295
-#define IF 296
-#define ELSE 297
-#define WHILE 298
-#define CONST 299
-#define ID 300
-#define SEMI 301
-#define COMMA 302
+#define TRUE_V 279
+#define FALSE_V 280
+#define INT_V 281
+#define FLOAT_V 282
+#define NOT 283
+#define AND 284
+#define OR 285
+#define EQ 286
+#define NEQ 287
+#define LT 288
+#define LE 289
+#define GT 290
+#define GE 291
+#define LP 292
+#define RP 293
+#define LB 294
+#define RB 295
+#define LBR 296
+#define RBR 297
+#define IF 298
+#define ELSE 299
+#define WHILE 300
+#define CONST 301
+#define ID 302
+#define SEMI 303
+#define COMMA 304
 
 
 
@@ -143,7 +147,7 @@ typedef union YYSTYPE
   int num;
 }
 /* Line 1529 of yacc.c.  */
-#line 147 "y.tab.h"
+#line 151 "y.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
