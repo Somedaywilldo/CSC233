@@ -1,7 +1,7 @@
 /***********************************************************************
  * 
- * Yihang Yin 1005644144 yihangmichael.yin@mail.utoronto.ca
- * Mingdong Li 1000529617 mingdong.li@mail.utoronto.ca
+ * Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
+ * Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
  *
  * This is the main driver program for the CSC467F course project
  * compiler.  It handles compiler command line options and
