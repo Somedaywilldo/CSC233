@@ -1,6 +1,9 @@
 %{
 /***********************************************************************
- *   Interface to the parser module for CSC467 course project.
+ *  Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
+ *  Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
+ *
+ * Interface to the parser module for CSC467 course project.
  * 
  *   Phase 2: Implement context free grammar for source language, and
  *            parse tracing functionality.
@@ -56,7 +59,37 @@ extern int yyline;        /* variable holding current line number   */
   int num;
 }
 // TODO:Replace myToken with your tokens, you can use these tokens in flex
-%token           myToken1 myToken2  
+// %token           myToken1 myToken2  
+
+%token 
+  // Data types
+  INT BOOL FLOAT 
+  VEC2 VEC3 VEC4
+  BVEC2 BVEC3 BVEC4
+  IVEC2 IVEC3 IVEC4
+  // Function name
+  DP3 LIT RSQ
+  // Operators
+  '+' '-' '*' '/' '=' '^' 
+  // Boolean values
+  BTRUE BFALSE
+  // Kogic operators
+  NOT AND OR 
+  EQ NEQ LT LE GT GE /* LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal*/
+  // Brackets
+  '(' ')' '[' ']' '{' '}'
+  // Key words
+  IF ELSE WHILE
+  // Qualifiers
+  CONST 
+  // Identifier
+  ID 
+  // Separators
+  ';' ','
+
+  // Integer Literal
+  // Float Literal
+  // Comment
 
 
 %start    program
@@ -81,8 +114,21 @@ tokens
   ;
 // TODO: replace myToken with the token the you defined.
 token
-  :     myToken1 
-  |     myToken2                     
+  :    
+    INT | BOOL | FLOAT | 
+    VEC2 | VEC3 | VEC4
+    BVEC2 | BVEC3 | BVEC4
+    IVEC2 | IVEC3 | IVEC4
+    DP3 | LIT | RSQ
+    '+' | '-' | '*' | '/' | '=' | '^' | 
+    BTRUE | BFALSE
+    NOT | AND | OR | 
+    EQ | NEQ | LT | LE | GT | GE | 
+    '(' | ')' | '[' | ']' | '{' | '}'
+    IF | ELSE | WHILE
+    CONST | 
+    ID | 
+    ';' | ','
   ;
 
 

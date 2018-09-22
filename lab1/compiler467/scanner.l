@@ -1,6 +1,9 @@
 %{
 /**********************************************************************
- *  Interface to the scanner module for CSC467 course project
+ *  Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
+ * 	Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
+ 
+ *	Interface to the scanner module for CSC467 course project
  **********************************************************************/
 
 
