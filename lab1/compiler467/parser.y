@@ -72,8 +72,12 @@ extern int yyline;        /* variable holding current line number   */
   // Operators
   PLUS MINUS MULT DIV POW // '+' '-' '*' '/' '^' '='
   ASSIGN
-  // Boolean values
-  BTRUE BFALSE
+  // Boolean Literal
+  TRUE_V FALSE_V
+  // Integer Literal
+  INT_V
+  // Float Literal
+  FLOAT_V
   // Logic operators
   NOT AND OR 
   EQ NEQ LT LE GT GE // LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal
@@ -89,9 +93,6 @@ extern int yyline;        /* variable holding current line number   */
   // Separators
   // ';' ','
   SEMI COMMA
-
-  // Integer Literal
-  // Float Literal
   // Comment
 
 
@@ -119,20 +120,22 @@ tokens
 token
   :    
     INT | BOOL | FLOAT | 
-    VEC2 | VEC3 | VEC4
-    BVEC2 | BVEC3 | BVEC4
-    IVEC2 | IVEC3 | IVEC4
-    DP3 | LIT | RSQ
-    PLUS | MINUS | MULT | DIV | POW
-    ASSIGN
-    BTRUE | BFALSE
+    VEC2 | VEC3 | VEC4 |
+    BVEC2 | BVEC3 | BVEC4 |
+    IVEC2 | IVEC3 | IVEC4 |
+    DP3 | LIT | RSQ |
+    PLUS | MINUS | MULT | DIV | POW |
+    ASSIGN |
+    TRUE_V | FALSE_V |
+    INT_V |
+    FLOAT_V |
     NOT | AND | OR | 
     EQ | NEQ | LT | LE | GT | GE | 
-    LP | RP | LB | RB | LBR | RBR
-    IF | ELSE | WHILE
+    LP | RP | LB | RB | LBR | RBR |
+    IF | ELSE | WHILE |
     CONST | 
     ID | 
-    SEMI | COMMA
+    SEMI | COMMA 
   ;
 
 
