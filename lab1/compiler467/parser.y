@@ -70,14 +70,16 @@ extern int yyline;        /* variable holding current line number   */
   // Function name
   DP3 LIT RSQ
   // Operators
-  '+' '-' '*' '/' '=' '^' 
+  PLUS MINUS MULT DIV POW // '+' '-' '*' '/' '^' '='
+  ASSIGN
   // Boolean values
   BTRUE BFALSE
-  // Kogic operators
+  // Logic operators
   NOT AND OR 
-  EQ NEQ LT LE GT GE /* LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal*/
+  EQ NEQ LT LE GT GE // LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal
   // Brackets
-  '(' ')' '[' ']' '{' '}'
+  // '(' ')' '[' ']' '{' '}'
+  LP RP LB RB LBR RBR
   // Key words
   IF ELSE WHILE
   // Qualifiers
@@ -85,7 +87,8 @@ extern int yyline;        /* variable holding current line number   */
   // Identifier
   ID 
   // Separators
-  ';' ','
+  // ';' ','
+  SEMI COMMA
 
   // Integer Literal
   // Float Literal
@@ -120,15 +123,16 @@ token
     BVEC2 | BVEC3 | BVEC4
     IVEC2 | IVEC3 | IVEC4
     DP3 | LIT | RSQ
-    '+' | '-' | '*' | '/' | '=' | '^' | 
+    PLUS | MINUS | MULT | DIV | POW
+    ASSIGN
     BTRUE | BFALSE
     NOT | AND | OR | 
     EQ | NEQ | LT | LE | GT | GE | 
-    '(' | ')' | '[' | ']' | '{' | '}'
+    LP | RP | LB | RB | LBR | RBR
     IF | ELSE | WHILE
     CONST | 
     ID | 
-    ';' | ','
+    SEMI | COMMA
   ;
 
 
