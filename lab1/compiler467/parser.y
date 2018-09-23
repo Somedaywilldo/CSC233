@@ -56,8 +56,11 @@ extern int yyline;        /* variable holding current line number   */
 // Can access me from flex useing yyval
 
 %union {
-  int num;
+  int ival;
+  float fval;
+  char* sval;
 }
+
 // TODO:Replace myToken with your tokens, you can use these tokens in flex
 // %token           myToken1 myToken2  
 
@@ -81,13 +84,14 @@ extern int yyline;        /* variable holding current line number   */
   // Key words
   IF ELSE WHILE
   // Qualifiers
-  CONST VOID
+  CONST 
   // Separators
   // ';' ','
   SEMI COMMA
   // Comment
   // Boolean Literal
-  BOOL_V
+  // BOOL_V
+  TRUE_V FALSE_V
   // Integer Literal
   INT_V
   // Float Literal
@@ -130,9 +134,9 @@ token
     EQ | NEQ | LT | LE | GT | GE | 
     LSB | RSB | LMB | RMB | LBB | RBB |
     IF | ELSE | WHILE |
-    CONST | VOID |
+    CONST |
     SEMI | COMMA |
-    BOOL_V |
+    TRUE_V | FALSE_V |
     INT_V |
     FLOAT_V |
     ID 
