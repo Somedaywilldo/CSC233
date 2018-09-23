@@ -46,61 +46,61 @@ FLOAT_V_reg   {integer}\.{integer}([eE][+\-]?{integer})?
 # \n是否应该算作是white space？，我认为不能算，否则可能没法给出错误行号。
 "\n" {yyline++;}
 
-int   {yRET_TRACE(INT)}
-ivec2 {yRET_TRACE(IVEC2)}
-ivec3 {yRET_TRACE(IVEC3)}
-ivec4 {yRET_TRACE(IVEC4)}
+int     {yRET_TRACE(INT)}
+ivec2   {yRET_TRACE(IVEC2)}
+ivec3   {yRET_TRACE(IVEC3)}
+ivec4   {yRET_TRACE(IVEC4)}
 
-float  {yRET_TRACE(FLOAT)}
-vec2   {yRET_TRACE(VEC2)}
-vec3   {yRET_TRACE(VEC3)}
-vec4   {yRET_TRACE(VEC4)}
+float   {yRET_TRACE(FLOAT)}
+vec2    {yRET_TRACE(VEC2)}
+vec3    {yRET_TRACE(VEC3)}
+vec4    {yRET_TRACE(VEC4)}
 
-bool     {yRET_TRACE(BOOL)}
-bvec2    {yRET_TRACE(BVEC2)}
-bvec3    {yRET_TRACE(BVEC3)}
-bvec4    {yRET_TRACE(BVEC4)}
+bool    {yRET_TRACE(BOOL)}
+bvec2   {yRET_TRACE(BVEC2)}
+bvec3   {yRET_TRACE(BVEC3)}
+bvec4   {yRET_TRACE(BVEC4)}
 
-dp3       {yRET_TRACE(DP3)}
-lit       {yRET_TRACE(LIT)}
-rsq       {yRET_TRACE(RSQ)}
+dp3     {yRET_TRACE(DP3)}
+lit     {yRET_TRACE(LIT)}
+rsq     {yRET_TRACE(RSQ)}
 
-"+"           {yRET_TRACE(PLUS)}
-"-"           {yRET_TRACE(MINUS)}
-"*"           {yRET_TRACE(MULT)}
-"/"           {yRET_TRACE(DIV)}
-"^"           {yRET_TRACE(POW)}
-"="           {yRET_TRACE(ASSIGN)}
+"+"     {yRET_TRACE(PLUS)}
+"-"     {yRET_TRACE(MINUS)}
+"*"     {yRET_TRACE(MULT)}
+"/"     {yRET_TRACE(DIV)}
+"^"     {yRET_TRACE(POW)}
+"="     {yRET_TRACE(ASSIGN)}
 
-"!"           {yRET_TRACE(NOT)}
-"&&"          {yRET_TRACE(AND)}
-"||"          {yRET_TRACE(OR)}
+"!"     {yRET_TRACE(NOT)}
+"&&"    {yRET_TRACE(AND)}
+"||"    {yRET_TRACE(OR)}
 
-"=="          {yRET_TRACE(EQ)}
-"!="          {yRET_TRACE(NEQ)}
-"<"           {yRET_TRACE(LT)}
-"<="          {yRET_TRACE(LE)}
-">"           {yRET_TRACE(GT)}
-">="          {yRET_TRACE(GE)}
+"=="    {yRET_TRACE(EQ)}
+"!="    {yRET_TRACE(NEQ)}
+"<"     {yRET_TRACE(LT)}
+"<="    {yRET_TRACE(LE)}
+">"     {yRET_TRACE(GT)}
+">="    {yRET_TRACE(GE)}
 
-"("           {yRET_TRACE(LSB)}
-")"           {yRET_TRACE(RSB)}
-"["           {yRET_TRACE(LMB)}
-"]"           {yRET_TRACE(RMB)}
-"{"           {yRET_TRACE(LBB)}
-"}"           {yRET_TRACE(RBB)}
+"("     {yRET_TRACE(LSB)}
+")"     {yRET_TRACE(RSB)}
+"["     {yRET_TRACE(LMB)}
+"]"     {yRET_TRACE(RMB)}
+"{"     {yRET_TRACE(LBB)}
+"}"     {yRET_TRACE(RBB)}
 
-if        {yRET_TRACE(IF)}
-else      {yRET_TRACE(ELSE)}
-while     {yRET_TRACE(WHILE)}
+if      {yRET_TRACE(IF)}
+else    {yRET_TRACE(ELSE)}
+while   {yRET_TRACE(WHILE)}
 
-const     {yRET_TRACE(CONST)}
+const   {yRET_TRACE(CONST)}
 
-";"        {yRET_TRACE(SEMI)}
-","        {yRET_TRACE(COMMA)}
+";"     {yRET_TRACE(SEMI)}
+","     {yRET_TRACE(COMMA)}
 
-true {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
-false {yRET_TRACE(FALSE_V)}
+true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
+false   {yRET_TRACE(FALSE_V)}
 
 
 # 联合变量的意义还需要明确一下
