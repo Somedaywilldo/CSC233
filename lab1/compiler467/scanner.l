@@ -10,10 +10,11 @@
     
     
     #define YY_USER_INIT { yyin = inputFile; }
-    #define    yyinput      input
+    #define yyinput      input
     #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
     #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
-    
+    #define yRET_TRACE(x) {yTRACE(x); return x}
+
     int CheckInt(void);
     int yyline = 1;
     
@@ -34,95 +35,79 @@ NUMBER {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 
 %%
 
-"const"    {yTRACE(CONST); return CONST;}
+"int"   {yRET_TRACE(INT)}
+"ivec2" {yRET_TRACE(IVEC2)}
+"ivec3" {yRET_TRACE(IVEC3)}
+"ivec4" {yRET_TRACE(IVEC4)}
 
-"void"  {yTRACE(VOID); return VOID;}
+"float"  {yRET_TRACE(FLOAT)}
+"vec2"   {yRET_TRACE(VEC2)}
+"vec3"   {yRET_TRACE(VEC3)}
+"vec4"   {yRET_TRACE(VEC4)}
 
-"int"  {yTRACE(INT); return INT;}
-"ivec2" {yTRACE(IVEC2); return IVEC2;}
-"ivec3" {yTRACE(IVEC3); return IVEC3;}
-"ivec4"  {yTRACE(IVEC4); return IVEC4;}
+"bool"     {yRET_TRACE(BOOL)}
+"bvec2"    {yRET_TRACE(BVEC2)}
+"bvec3"    {yRET_TRACE(BVEC3)}
+"bvec4"    {yRET_TRACE(BVEC4)}
 
-"float"   {yTRACE(FLOAT); return FLOAT;}
-"vec2"   {yTRACE(VEC2); return VEC2;}
-"vec3"   {yTRACE(VEC3); return VEC3;}
-"vec4"   {yTRACE(VEC4); return VEC4;}
+"dp3"       {yRET_TRACE(DP3)}
+"lit"       {yRET_TRACE(LIT)}
+"rsq"       {yRET_TRACE(RSQ)}
 
-"bool"   {yTRACE(BOOL); return BOOL;}
-"bvec2"    {yTRACE(BVEC2); return BVEC2;}
-"bvec3"    {yTRACE(BVEC3); return BVEC3;}
-"bvec4"    {yTRACE(BVEC4); return BVEC4;}
++           {yRET_TRACE(PLUS)}
+-           {yRET_TRACE(MINUS)}
+*           {yRET_TRACE(MULT)}
+/           {yRET_TRACE(DIV)}
+^           {yRET_TRACE(POW)}
+=           {yRET_TRACE(ASSIGN)}
 
+!           {yRET_TRACE(NOT)}
+&&          {yRET_TRACE(AND}
+||          {yRET_TRACE(OR)}
 
-"if"    {yTRACE(IF); return IF;}
-"else"    {yTRACE(ELSE); return ELSE;}
-"while"    {yTRACE(WHILE); return WHILE;}
+==          {yRET_TRACE(EQ}
+!=          {yRET_TRACE(NEQ)}
+<           {yRET_TRACE(LT)}
+<=          {yRET_TRACE(LE)}
+>           {yRET_TRACE(GT)}
+>=          {yRET_TRACE(GE)}
 
+(           {yRET_TRACE(LSB)}
+)           {yRET_TRACE(RSB)}
+[           {yRET_TRACE(LMB)}
+]           {yRET_TRACE(RMB)}
+{           {yRET_TRACE(LBB)}
+}           {yRET_TRACE(RBB)}
 
-"gl_FragColor"           {yTRACE(GL_FRAGCOLOR); return GL_FRAGCOLOR;}
-"gl_FragDepth"           {yTRACE(GL_FRAGDEPTH); return GL_FRAGDEPTH;}
-"gl_FragCoord"           {yTRACE(GL_FRAGCOORD); return GL_FRAGCOORD;}
-"gl_TexCoord"            {yTRACE(GL_TEXCOORD); return GL_TEXCOORD;}
-"gl_Color"                  {yTRACE(GL_COLOR); return GL_COLOR;}
-"gl_Secondary"           {yTRACE(GL_SECONDARY); return GL_SECONDARY;}
-"gl_FogFragCoord"        {yTRACE(GL_FOGFRAGCOORD); return gl_FOGFRAGCOORD;}
-"gl_Light_Half"          {yTRACE(GL_LIGHT_HALF); return GL_LIGHT_HALF;}
-"gl_Light_Ambient"       {yTRACE(GL_LIGHT_AMBIENT); return GL_LIGHT_AMBIENT;}
-"gl_Material_Shininess"  {yTRACE(GL_MATERIAL_SHININESS); return GL_MATERIAL_SHININESS;}
-"env1"                   {yTRACE(ENV1); return ENV1;}
-"env2"                   {yTRACE(ENV2); return ENV2;}
-"env3"                   {yTRACE(ENV3); return ENV3;}
+"if"        {yRET_TRACE(IF)}
+"else"      {yRET_TRACE(ELSE)}
+"while"     {yRET_TRACE(WHILE)}
 
-=                 {yTRACE(EQ); return EQ;}
-==            {yTRACE(COMPARE);return COMPARE;}
-!             {yTRACE(NOT); return NOT;}
-!=                                 {yTRACE(NOTEQ); return NOTEQ;}
-<                               {yTRACE(LT); return LT;}
-<=                               {yTRACE(LE); return LE;}
->                               {yTRACE(GT); return GT;}
->=                              {yTRACE(GE); return GE;}
+"const"     {yRET_TRACE(CONST)}
+"void"      {yRET_TRACE(VOID)}
 
-&&                              {yTRACE(AND);return AND;}
-| |                             {yTRACE(OR); return OR;}
+;           {yRET_TRACE(SEMI)}
+,           {yRET_TRACE(COMA)}
 
-
-+                               {yTRACE(PLUS); return PLUS;}
--                               {yTRACE(MINUS); return MINUS;}
-*                               {yTRACE(TIMES); return TIMES;}
-/                               {yTRACE(DIVIDE); return DIVIDE;}
-^                               {yTRACE(POWER); return POWER;}
-%                               {yTRACE(MOD); return MOD;}
-,                               {yTRACE(COMA); return COMA;}
-;                               {yTRACE(SEMICO); return SEMICO;}
-
-(                               {yTRACE(LSB); return LSB;}
-
-)                               {yTRACE(RSB); return RSB;}
-
-[                               {yTRACE(LMB); return LMB;}
-
-]                               {yTRACE(RMB); return RMB;}
-
-{                               {yTRACE(LBB); return LBB;}
-    
-}                               {yTRACE(RBB); return RBB;}
-
-[A-Za-z]][A-za-z0-9]*/{WS}      {
-    yylval.idName=(char *) malloc((yyleng+1)*sizeof(char));
-    strncpy(yylval.idName,yytext,yyleng+1);
-    {yTRACE(IDENTIFIER); return IDENTIFIER;}
-}
+/*
+"gl_FragColor"           {yRET_TRACE(GL_FRAGCOLOR)}
+"gl_FragDepth"           {yRET_TRACE(GL_FRAGDEPTH)}
+"gl_FragCoord"           {yRET_TRACE(GL_FRAGCOORD)}
+"gl_TexCoord"            {yRET_TRACE(GL_TEXCOORD)}
+"gl_Color"               {yRET_TRACE(GL_COLOR)}
+"gl_Secondary"           {yRET_TRACE(GL_SECONDARY)}
+"gl_FogFragCoord"        {yRET_TRACE(GL_FOGFRAGCOORD)}
+"gl_Light_Half"          {yRET_TRACE(GL_LIGHT_HALF)}
+"gl_Light_Ambient"       {yRET_TRACE(GL_LIGHT_AMBIENT)}
+"gl_Material_Shininess"  {yRET_TRACE(GL_MATERIAL_SHININESS)}
+"env1"                   {yRET_TRACE(ENV1)}
+"env2"                   {yRET_TRACE(ENV2)}
+"env3"                   {yRET_TRACE(ENV3)}
+*/
 
 
-[+-]?[0-9]+/{WS}                     {
-    yylval.intValue =atoi(yytext);
-    yTRACE(INT_VALUE); return INT_VALUE;
-}
 
-[+-]?(([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+))/{WS}{
-    yylval.floatValue =atof(yytext);
-    yTRACE(FLOAT_VALUE); return FLOAT_VALUE;
-}
+
 
 (true|false)/{WS}   {
     int a=0;
@@ -133,10 +118,24 @@ NUMBER {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
         a=0;
     }
     yylval.boolValue=a;
-    
-    {yTRACE(BOOL_VALUE); return BOOL_VALUE;}
+    yRET_TRACE(BOOL_V);
 }
 
+[+-]?[0-9]+/{WS}    {
+    yylval.intValue =atoi(yytext);
+    yRET_TRACE(INT_V);
+}
+
+[+-]?(([0-9]+"."[0-9]*)|([0-9]*"."[0-9]+))/{WS}     {
+    yylval.floatValue =atof(yytext);
+    yRET_TRACE(FLOAT_V);
+}
+
+[A-Za-z]][A-za-z0-9]*/{WS}    {
+    yylval.idName=(char *) malloc((yyleng+1)*sizeof(char));
+    strncpy(yylval.idName,yytext,yyleng+1);
+    yRET_TRACE(ID);
+}
 
 
 

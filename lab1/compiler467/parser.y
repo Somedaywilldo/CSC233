@@ -72,28 +72,28 @@ extern int yyline;        /* variable holding current line number   */
   // Operators
   PLUS MINUS MULT DIV POW // '+' '-' '*' '/' '^' '='
   ASSIGN
-  // Boolean Literal
-  TRUE_V FALSE_V
-  // Integer Literal
-  INT_V
-  // Float Literal
-  FLOAT_V
   // Logic operators
   NOT AND OR 
   EQ NEQ LT LE GT GE // LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal
   // Brackets
   // '(' ')' '[' ']' '{' '}'
-  LP RP LB RB LBR RBR
+  LSB RSB LMB RMB LBB RBB
   // Key words
   IF ELSE WHILE
   // Qualifiers
-  CONST 
-  // Identifier
-  ID 
+  CONST VOID
   // Separators
   // ';' ','
   SEMI COMMA
   // Comment
+  // Boolean Literal
+  BOOL_V
+  // Integer Literal
+  INT_V
+  // Float Literal
+  FLOAT_V
+  // Identifier
+  ID 
 
 
 %start    program
@@ -126,16 +126,16 @@ token
     DP3 | LIT | RSQ |
     PLUS | MINUS | MULT | DIV | POW |
     ASSIGN |
-    TRUE_V | FALSE_V |
-    INT_V |
-    FLOAT_V |
     NOT | AND | OR | 
     EQ | NEQ | LT | LE | GT | GE | 
-    LP | RP | LB | RB | LBR | RBR |
+    LSB | RSB | LMB | RMB | LBB | RBB |
     IF | ELSE | WHILE |
-    CONST | 
-    ID | 
-    SEMI | COMMA 
+    CONST | VOID |
+    SEMI | COMMA |
+    BOOL_V |
+    INT_V |
+    FLOAT_V |
+    ID 
   ;
 
 
