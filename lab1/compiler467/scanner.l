@@ -14,7 +14,6 @@
     #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
     #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
     #define yRET_TRACE(x) { yTRACE(x) return x;}
-    #define MAX_ID_LENGTH 512
 
     int CheckInt(void);
     int yyline = 1;
@@ -26,13 +25,11 @@
 
 WS      [ \t]+
 
-
 LETTER  [A-Za-z]
 DIGIT   [0-9]
 NUMBER  {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 
 # 正则问题，ID中的下划线没有考虑
-ID_reg      {letter}({letter}|digit}){1,MAX_ID_LENGTH}
 ID_reg 	      [a-zA-Z][a-zA-Z_]{1,MAX_ID_LENGTH}
 # 整数、实数和ID的最大长度没有限制，尽量不要使用+或者*这样的正则。
 INT_V_reg     0|([1-9][0-9]*)
@@ -104,23 +101,47 @@ false   {yRET_TRACE(FALSE_V)}
 
 
 # 联合变量的意义还需要明确一下
-{integer} {
+{INT_V_reg} {
     yylval.ival = atoi(yytext);
     yRET_TRACE(INT_V);
 }
 
-{float} {
+{FLOAT_V_reg} {
     yylval.fval = atof(yytext);
     yRET_TRACE(FLOAT_V);
 }
 
-{id} {
-    if (strlen(yytext) > 512)
+{ID_reg} {
+    if (strlen(yytext) > MAX_ID) /*有待考证*/
         yERROR("ERROR: Identifier exceeds maximum_length");
     yylval.sval = yytext; 
     yRET_TRACE(ID);
 }
 
-# 添加注释和报错问题
+/*Deal with the comments*/
+
+"/*" {
+    char last_char = '\0';
+    char now_char = yyinput();
+    bool comment_matched = false;
+    int now_line = yyline;
+    while(now_char != EOF){
+        if(now_char == '\n')
+            yyline++;
+        if(last_char == '*' && now_char == '/'){
+            comment_matched = true;
+            break;
+        }
+        last_char = now_char;
+        now_char = yyinput();
+    }
+    if(!comment_matched){
+        yERROR("Unmatched comment");
+    }
+}
+
+/*If a string didn't match any of the rules above are not matched, */
+.       {yERROR("Unknown token"); }
+
 
 %%
