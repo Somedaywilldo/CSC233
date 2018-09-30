@@ -31,11 +31,11 @@ LETTER  [A-Za-z]
 DIGIT   [0-9]
 NUMBER  {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
 
-# 正则问题，ID中的下划线没有考虑
-ID_reg 	      [a-zA-Z][a-zA-Z_]{1,MAX_ID_LENGTH}
+/*RegEx for identifiers, start with _ or A or a, max length to 512*/
+ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,512}
 # 整数、实数和ID的最大长度没有限制，尽量不要使用+或者*这样的正则。
-INT_V_reg     0|([1-9][0-9]*)
-FLOAT_V_reg   {integer}\.{integer}([eE][+\-]?{integer})? 
+INT_V_reg     -?[1-9]\d{1,10}
+FLOAT_V_reg   -?[0-9]{0,38}\.?[0-9]{1,38}
 
 
 %%
@@ -103,6 +103,8 @@ false   {yRET_TRACE(FALSE_V)}
 
 
 # 联合变量的意义还需要明确一下
+# 整数和float的范围需要确定一下，应该有报错
+
 {INT_V_reg} {
     yylval.ival = atoi(yytext);
     yRET_TRACE(INT_V);
