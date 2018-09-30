@@ -61,8 +61,7 @@ extern int yyline;        /* variable holding current line number   */
   char* sval;
 }
 
-// TODO:Replace myToken with your tokens, you can use these tokens in flex
-// %token           myToken1 myToken2  
+// Tokens are classified by the types acording to MiniGLSL specification.
 
 %token 
   // Data types

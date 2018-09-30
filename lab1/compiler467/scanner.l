@@ -15,6 +15,7 @@
     #define yyinput      input
     #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
     #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
+    /*Add a macro to simplfy the return*/
     #define yRET_TRACE(x) { yTRACE(x) return x;}
 
     int CheckInt(void);
