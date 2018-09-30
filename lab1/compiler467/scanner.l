@@ -27,23 +27,16 @@
 
 WS      [ \t]+
 
-LETTER  [A-Za-z]
-DIGIT   [0-9]
-NUMBER  {digit}+(\.{digit}+)?(E[+-]?{digit}+)?
-
 /*RegEx for identifiers, start with _ or A or a, max length to 512*/
-ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,512}
-# 整数、实数和ID的最大长度没有限制，尽量不要使用+或者*这样的正则。
+ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,(MAX_IDENTIFIER-1)}
 INT_V_reg     -?[1-9]\d{1,10}
-FLOAT_V_reg   -?[0-9]{0,38}\.?[0-9]{1,38}
-
+FLOAT_V_reg   [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?
 
 %%
 
-{WS} {}
+{WS}    {/*There is nothing to be done.*/}
 
-# \n是否应该算作是white space？，我认为不能算，否则可能没法给出错误行号。
-"\n" {yyline++;}
+"\n"    {yyline++;}
 
 int     {yRET_TRACE(INT)}
 ivec2   {yRET_TRACE(IVEC2)}
@@ -102,8 +95,9 @@ true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
 false   {yRET_TRACE(FALSE_V)}
 
 
-# 联合变量的意义还需要明确一下
-# 整数和float的范围需要确定一下，应该有报错
+
+# 整数和float的范围需要确定一下，应该有判断报错的if
+# 参见： https://piazza.com/class/jlixzbiwrgy634?cid=18
 
 {INT_V_reg} {
     yylval.ival = atoi(yytext);
@@ -116,14 +110,13 @@ false   {yRET_TRACE(FALSE_V)}
 }
 
 {ID_reg} {
-    if (strlen(yytext) > MAX_ID) /*有待考证*/
-        yERROR("ERROR: Identifier exceeds maximum_length");
+    if (strlen(yytext) > MAX_IDENTIFIER) /*有待考证*/
+        yERROR("ERROR: Identifier maximum length exeeded.");
     yylval.sval = yytext; 
     yRET_TRACE(ID);
 }
 
 /*Deal with the comments*/
-
 "/*" {
     char last_char = '\0';
     char now_char = yyinput();
