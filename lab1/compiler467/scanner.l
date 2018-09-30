@@ -27,8 +27,8 @@
 
 WS      [ \t]+
 
-/*RegEx for identifiers, start with _ or A or a, max length to 512*/
-ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,(MAX_IDENTIFIER-1)}
+    /*RegEx for identifiers, start with _ or A or a, max length to 512*/
+ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,31}
 INT_V_reg     -?[1-9]\d{1,10}
 FLOAT_V_reg   [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?
 
@@ -95,14 +95,14 @@ true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
 false   {yRET_TRACE(FALSE_V)}
 
 
-
-# 整数和float的范围需要确定一下，应该有判断报错的if
-# 参见： https://piazza.com/class/jlixzbiwrgy634?cid=18
-
 {INT_V_reg} {
     yylval.ival = atoi(yytext);
     yRET_TRACE(INT_V);
 }
+
+    /*float size needs to be sure if*/
+    /*view: https://piazza.com/class/jlixzbiwrgy634?cid=18*/
+    /*Re: https://www.regular-expressions.info/floatingpoint.html*/
 
 {FLOAT_V_reg} {
     yylval.fval = atof(yytext);
@@ -110,18 +110,18 @@ false   {yRET_TRACE(FALSE_V)}
 }
 
 {ID_reg} {
-    if (strlen(yytext) > MAX_IDENTIFIER) /*有待考证*/
+    if(strlen(yytext)>MAX_IDENTIFIER)
         yERROR("ERROR: Identifier maximum length exeeded.");
-    yylval.sval = yytext; 
+    yylval.sval = yytext;
     yRET_TRACE(ID);
 }
 
-/*Deal with the comments*/
+    /*Deal with the comments*/
+
 "/*" {
     char last_char = '\0';
     char now_char = yyinput();
     bool comment_matched = false;
-    int now_line = yyline;
     while(now_char != EOF){
         if(now_char == '\n')
             yyline++;
@@ -137,7 +137,7 @@ false   {yRET_TRACE(FALSE_V)}
     }
 }
 
-/*If a string didn't match any of the rules above are not matched, */
+    /*If a string didn't match any of the rules above are not matched*/
 .       {yERROR("Unknown token"); }
 
 
