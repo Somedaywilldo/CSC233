@@ -29,12 +29,6 @@ void yyerror(const char* s);    /* what to do in case of error            */
 int yylex();              /* procedure for calling lexical analyzer */
 extern int yyline;        /* variable holding current line number   */
 
-enum {
-  DP3 = 0, 
-  LIT = 1, 
-  RSQ = 2
-};
-
 %}
 
 /***********************************************************************
@@ -83,7 +77,6 @@ enum {
    
 // Data types
 %token INT BOOL FLOAT 
-%token FUNC
 
 // Binary operators
 %token AND OR EQ NEQ LEQ GEQ         
@@ -206,24 +199,21 @@ constructor:
 	type '(' arguments ')'						{yTRACE("constructor -> type '(' arguments ')'");}							
 	;
 function:
-	function_name '(' arguments_opt ')'			{ yTRACE("function -> function_name '(' arguments_opt ')'"); }		
+	function_name '(' arguments_opt ')'			{yTRACE("function -> function_name '(' arguments_opt ')'");}		
 	;
-function_name:
-	DP3											{ yTRACE("function_name -> function_name '(' arguments_opt ')'"); }	
-	LIT
-	RSQ
-
+function_name
+	DP3											{yTRACE("function_name -> DP3");}						|
+	LIT											{yTRACE("function_name -> LIT");}						|
+	RSQ											{yTRACE("function_name -> RSQ");}						|
+	;
 arguments_opt:
-	arguments 									{yTRACE("arguments_opt -> arguments");}					|					| 
+	arguments 									{yTRACE("arguments_opt -> arguments");}					| 
 												{yTRACE("arguments_opt -> epsilon");}
 	;
 arguments:
-	arguments ',' expression					{yTRACE("arguments -> arguments , expression");}		|
-	expression									{yTRACE("arguments -> arguments , expression");}
+	arguments ',' expression					{yTRACE("arguments -> arguments ',' expression");}		|
+	expression									{yTRACE("arguments -> arguments  expression");}
 	;
-
-
-
 %%
 
 /***********************************************************************ol
