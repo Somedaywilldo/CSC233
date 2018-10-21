@@ -54,6 +54,18 @@ bvec2   {yRET_TRACE(BVEC2)}
 bvec3   {yRET_TRACE(BVEC3)}
 bvec4   {yRET_TRACE(BVEC4)}
 
+#this partshould verifeid not sure why -'1' and do we need to modified VECT_T, IVECT_T,BVEC
+
+vec(2|3|4) {yylval.vec=yytext[3]-'1';yOUT(VEC_T);}
+
+ivec(2|3|4) {yylval.vec=yytext[4]-'1';yOUT(IVEC_T);}
+
+bvec(2|3|4)  {yylval.vec=yytext[4]-'1'; yOUT(BVEC_T);}
+
+
+
+
+
 dp3     {yRET_TRACE(DP3)}
 lit     {yRET_TRACE(LIT)}
 rsq     {yRET_TRACE(RSQ)}
