@@ -138,7 +138,7 @@ statements:
 declaration:									
 	type ID ';'									{yTRACE("declaration -> type ID ';'"); }				|
 	type ID '=' expression ';'					{yTRACE("declaration -> type ID '=' expression ';'"); }	|
-	'const' type ID '=' expression ';'			{yTRACE("declaration -> CONST type ID '=' expression ';'"); }|
+	CONST type ID '=' expression ';'			{yTRACE("declaration -> CONST type ID '=' expression ';'"); }|
 												{yTRACE("declaration -> type epsilon ';'"); }
 	;
 statement:
