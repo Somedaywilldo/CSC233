@@ -1,7 +1,10 @@
 %{
 /**********************************************************************
  *
- * **YOUR GROUP INFO SHOULD GO HERE**
+ *   GROUP 25
+ *   
+ *   Louis Chen - 1000303502
+ *   Juntu Chen - 1000659799
  *
  *  Interface to the scanner module for CSC467 course project
  **********************************************************************/
@@ -39,6 +42,7 @@ int yyline = 1;
 \r?\n                         { yyline++; }
 <<EOF>>                       { yyterminate(); }
 
+","			                      { yOUT(yytext[0]); }
 [+\-*/\^]                     { yOUT(yytext[0]); }
 [()[\]{}]                     { yOUT(yytext[0]); }
 [<>=!]                        { yOUT(yytext[0]); }
@@ -51,29 +55,29 @@ int yyline = 1;
 "=="                          { yOUT(EQ); }
 
 const                         { yOUT(CONST); }
-bool                          { yOUT(BOOL_T); }
-int                           { yOUT(INT_T); }
-float                         { yOUT(FLOAT_T); }
-vec(2|3|4)                    { yylval.as_vec = yytext[3] - '1'; yOUT(VEC_T); }
-ivec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(IVEC_T); }
-bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(BVEC_T); }
+bool                          { yOUT(BOOL); }
+int                           { yOUT(INT); }
+float                         { yOUT(FLOAT); }
+vec(2|3|4)                    { yylval.vec = yytext[3] - '1'; yOUT(VEC); }
+ivec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(IVEC); }
+bvec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(BVEC); }
 
 if                            { yOUT(IF); }
 else                          { yOUT(ELSE); }
 while                         { yOUT(WHILE); }
 
-dp3                           { yylval.as_func = 0; yOUT(FUNC); }
-rsq                           { yylval.as_func = 2; yOUT(FUNC); }
-lit                           { yylval.as_func = 1; yOUT(FUNC); }
+dp3                           { yOUT(DP3); }
+rsq                           { yOUT(RSQ); }
+lit                           { yOUT(LIT); }
 
-true                          { yOUT(TRUE_C); }
-false                         { yOUT(FALSE_C); }
+true                          { yOUT(TRUE_V); }
+false                         { yOUT(FALSE_V); }
 
-0                             { yylval.as_int = 0; yOUT(INT_C); }                  
-[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_C); } yyterminate(); }
+0                             { yylval.int_val = 0; yOUT(INT_V); }                  
+[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_V); } yyterminate(); }
 
-(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
-\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
+(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
+\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
 
 [A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yOUT(ID); } yyterminate(); }
 
@@ -128,7 +132,7 @@ int ParseInt(void) {
     return 0;
   }
 
-  yylval.as_int = (int) num;
+  yylval.int_val = (int) num;
   return 1;
 }
 
@@ -155,7 +159,7 @@ int ParseFloat(void) {
     return 0;
   }  
 
-  yylval.as_float = (float) num;
+  yylval.float_val = (float) num;
   return 1;
 }
 
@@ -169,7 +173,7 @@ int ParseIdent(void) {
   char *ident = (char *) calloc(yyleng + 1, sizeof(char));
   memcpy(ident, yytext, yyleng);
 
-  yylval.as_str = ident;
+  yylval.str_val = ident;
   return 1; 
 }
 

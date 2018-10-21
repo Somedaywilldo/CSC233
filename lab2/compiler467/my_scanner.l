@@ -111,7 +111,7 @@ false   {yRET_TRACE(FALSE_V)}
 
 
 {INT_V_reg} {
-    yylval.ival = atoi(yytext);
+    yylval.int_val = atoi(yytext);
     yRET_TRACE(INT_V);
 }
 
@@ -120,14 +120,14 @@ false   {yRET_TRACE(FALSE_V)}
     /*Re: https://www.regular-expressions.info/floatingpoint.html*/
 
 {FLOAT_V_reg} {
-    yylval.fval = atof(yytext);
+    yylval.float_val = atof(yytext);
     yRET_TRACE(FLOAT_V);
 }
 
 {ID_reg} {
     if(strlen(yytext)>MAX_IDENTIFIER)
         yERROR("ERROR: Identifier maximum length exeeded.");
-    yylval.sval = yytext;
+    yylval.str_val = yytext;
     yRET_TRACE(ID);
 }
 

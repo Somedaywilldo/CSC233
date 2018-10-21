@@ -175,7 +175,7 @@ expression:
 	;
 variable:
 	ID											{yTRACE("variable -> ID");}								|
-	ID '[' INT_V ']'							{yTRACE("variable -> ID '[' INT_C ']'");}
+	ID '[' INT_V ']'							{yTRACE("variable -> ID '[' INT_V ']'");}
 	;
 unary_op:
 	'!'											{yTRACE("unary_op -> '!'");}							|

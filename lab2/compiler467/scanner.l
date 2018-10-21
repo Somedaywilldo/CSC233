@@ -1,179 +1,154 @@
 %{
-/**********************************************************************
- *
- *   GROUP 25
- *   
- *   Louis Chen - 1000303502
- *   Juntu Chen - 1000659799
- *
- *  Interface to the scanner module for CSC467 course project
- **********************************************************************/
+    /**********************************************************************
+     *  Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
+     *  Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
+     *  Interface to the scanner module for CSC467 course project
+     **********************************************************************/
+    
+    
+    #include "common.h"
+    #include "parser.tab.h"
+    #include "string.h"
+    
+    
+    #define YY_USER_INIT { yyin = inputFile; }
+    #define yyinput      input
+    #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
+    #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; yyterminate(); }
+    /*Add a macro to simplfy the return*/
+    #define yRET_TRACE(x) { yTRACE(x) return x;}
 
-#include <stdlib.h>
-#include <limits.h>
-#include <float.h>
-#include <math.h>
-#include <string.h>
-
-#include "common.h"
-#include "parser.tab.h"
-
-#define YY_USER_INIT { yyin = inputFile; }
-#define yyinput      input
-#define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
-#define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; }
-#define yOUT(x)      { yTRACE(x); return x; }
-
-/* forward declarations */
-int ParseComment(void);
-int ParseInt(void);
-int ParseFloat(void);
-int ParseIdent(void);
-int yyline = 1;
-
+    int CheckInt(void);
+    int yyline = 1;
+    
 %}
+
 %option noyywrap
 
-%%
 
-"/*"                          { if(!ParseComment()) { yyterminate(); } }
+WS      [ \t]+
 
-[ \t]                         { }
-\r?\n                         { yyline++; }
-<<EOF>>                       { yyterminate(); }
-
-","			                      { yOUT(yytext[0]); }
-[+\-*/\^]                     { yOUT(yytext[0]); }
-[()[\]{}]                     { yOUT(yytext[0]); }
-[<>=!]                        { yOUT(yytext[0]); }
-";"                           { yOUT(yytext[0]); }
-"&&"                          { yOUT(AND); }
-"||"                          { yOUT(OR); }
-"!="                          { yOUT(NEQ); }
-"<="                          { yOUT(LEQ); }
-">="                          { yOUT(GEQ); }
-"=="                          { yOUT(EQ); }
-
-const                         { yOUT(CONST); }
-bool                          { yOUT(BOOL); }
-int                           { yOUT(INT); }
-float                         { yOUT(FLOAT); }
-vec(2|3|4)                    { yylval.vec = yytext[3] - '1'; yOUT(VEC); }
-ivec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(IVEC); }
-bvec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(BVEC); }
-
-if                            { yOUT(IF); }
-else                          { yOUT(ELSE); }
-while                         { yOUT(WHILE); }
-
-dp3                           { yOUT(DP3); }
-rsq                           { yOUT(RSQ); }
-lit                           { yOUT(LIT); }
-
-true                          { yOUT(TRUE_V); }
-false                         { yOUT(FALSE_V); }
-
-0                             { yylval.int_val = 0; yOUT(INT_V); }                  
-[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_V); } yyterminate(); }
-
-(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
-\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
-
-[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yOUT(ID); } yyterminate(); }
-
-0[0-9]+                       { yERROR("Octal numbers are not allowed.");  yyterminate(); }
-[0-9]+[a-zA-Z_]+              { yERROR("Integers and identifiers/keywords must be separated by whitespace.");  yyterminate(); }
-.                             { yERROR("Unknown token");  yyterminate(); }
+    /*RegEx for identifiers, start with _ or A or a, max length to 512*/
+ID_reg 	      [A-Za-z_][A-Za-z0-9_]{1,31}
+INT_V_reg     -?[1-9]\d{1,10}
+FLOAT_V_reg   [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?
 
 %%
 
-/* Constants used later */
-enum {
-  MAX_INT_LIT = (1 << 21) - 1,
-  MIN_INT_LIT = -MAX_INT_LIT,
-  MAX_IDENT_LEN = 32
-};
+{WS}    {/*There is nothing to be done.*/}
 
-/* Eat a C-style comment. */
-int ParseComment(void) {
-  int c1 = 0;
-  int c2 = yyinput();
-  int curline = yyline;
-  for(;;) {
-    if (c2 == EOF) {
-      fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: Unmatched /*\n", curline);
-      errorOccurred = TRUE;
-      return 0;
-    }
-    if ('*' == c1 && '/' == c2) {
-      break;
-    }
-    c1 = c2;
-    c2 = yyinput();
-    if ('\n' == c1 && EOF != c2) {
-      yyline++;
-    }
-  }
-  return 1;
+"\n"    {yyline++;}
+
+int     {yRET_TRACE(INT)}
+    /*
+    ivec2   {yRET_TRACE(IVEC2)}
+    ivec3   {yRET_TRACE(IVEC3)}
+    ivec4   {yRET_TRACE(IVEC4)}
+    */
+float   {yRET_TRACE(FLOAT)}
+    /*
+    vec2    {yRET_TRACE(VEC2)}
+    vec3    {yRET_TRACE(VEC3)}
+    vec4    {yRET_TRACE(VEC4)}
+    */
+bool    {yRET_TRACE(BOOL)}
+    /*
+    bvec2   {yRET_TRACE(BVEC2)}
+    bvec3   {yRET_TRACE(BVEC3)}
+    bvec4   {yRET_TRACE(BVEC4)}
+    */
+    /*
+    partshould verifeid not sure why -'1' and do we need to modified VECT_T, IVECT_T,BVEC
+    */
+vec(2|3|4)  {yylval.vec = yytext[3]-'1'; yRET_TRACE(VEC);}
+ivec(2|3|4) {yylval.vec = yytext[4]-'1'; yRET_TRACE(IVEC);}
+bvec(2|3|4) {yylval.vec = yytext[4]-'1'; yRET_TRACE(BVEC);}
+
+dp3     {yRET_TRACE(DP3)}
+lit     {yRET_TRACE(LIT)}
+rsq     {yRET_TRACE(RSQ)}
+
+    /*
+    "+"     {yRET_TRACE(PLUS)}
+    "-"     {yRET_TRACE(MINUS)}
+    "*"     {yRET_TRACE(MULT)}
+    "/"     {yRET_TRACE(DIV)}
+    "^"     {yRET_TRACE(POW)}
+    "="     {yRET_TRACE(ASSIGN)}
+    */
+[+\-*/\^]   {yRET_TRACE(yytext[0])}
+
+
+"!"     {yRET_TRACE('!')}
+"&&"    {yRET_TRACE(AND)}
+"||"    {yRET_TRACE(OR)}
+
+"=="    {yRET_TRACE(EQ)}
+"!="    {yRET_TRACE(NEQ)}
+"<"     {yRET_TRACE('<')}
+"<="    {yRET_TRACE(LEQ)}
+">"     {yRET_TRACE('>')}
+">="    {yRET_TRACE(GEQ)}
+
+[()[\]{}] { yRET_TRACE(yytext[0])}
+
+if      {yRET_TRACE(IF)}
+else    {yRET_TRACE(ELSE)}
+while   {yRET_TRACE(WHILE)}
+
+const   {yRET_TRACE(CONST)}
+
+";"     {yRET_TRACE(SEMI)}
+","     {yRET_TRACE(COMMA)}
+
+true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
+false   {yRET_TRACE(FALSE_V)}
+
+
+{INT_V_reg} {
+    yylval.ival = atoi(yytext);
+    yRET_TRACE(INT_V);
 }
 
-/* Convert a string to an integer token. */
-int ParseInt(void) {
-  long num = strtol(yytext, NULL, 10);
-  if(ERANGE == errno) {
-    if(LONG_MAX == num || LONG_MIN == num) {
-      yERROR("Integer literal is out of range (case 1).");
-      return 0;
+    /*float size needs to be sure if*/
+    /*view: https://piazza.com/class/jlixzbiwrgy634?cid=18*/
+    /*Re: https://www.regular-expressions.info/floatingpoint.html*/
+
+{FLOAT_V_reg} {
+    yylval.fval = atof(yytext);
+    yRET_TRACE(FLOAT_V);
+}
+
+{ID_reg} {
+    if(strlen(yytext)>MAX_IDENTIFIER)
+        yERROR("ERROR: Identifier maximum length exeeded.");
+    yylval.sval = yytext;
+    yRET_TRACE(ID);
+}
+
+    /*Deal with the comments*/
+
+"/*" {
+    char last_char = '\0';
+    char now_char = yyinput();
+    bool comment_matched = false;
+    while(now_char != EOF){
+        if(now_char == '\n')
+            yyline++;
+        if(last_char == '*' && now_char == '/'){
+            comment_matched = true;
+            break;
+        }
+        last_char = now_char;
+        now_char = yyinput();
     }
-  }
-
-  if(MAX_INT_LIT < num || MIN_INT_LIT > num) {
-    yERROR("Integer literal is out of range (case 2).");
-    return 0;
-  }
-
-  yylval.int_val = (int) num;
-  return 1;
-}
-
-/* Convert a string to a float token. */
-int ParseFloat(void) {
-  double num = strtod(yytext, NULL);
-  
-  if(ERANGE == errno) {
-    if(HUGE_VAL == num || -HUGE_VAL == num) {
-      yERROR("Floating point literal is out of range (case 1).");
-      return 0;
+    if(!comment_matched){
+        yERROR("Unmatched comment");
     }
-  }
-
-  /* a NaN value; this is weird */
-  if(num != num) {
-    yERROR("Floating point literal is NaN.");
-    return 0;
-  }
-
-  /* out of range; we consider overflow but not underflow */
-  if(FLT_MAX < num || -FLT_MAX > num) {
-    yERROR("Floating point literal is out of range (case 2).");
-    return 0;
-  }  
-
-  yylval.float_val = (float) num;
-  return 1;
 }
 
-/* Convert a string into an identifier token. */
-int ParseIdent(void) {
-  if(MAX_IDENT_LEN < yyleng) {
-    yERROR("Identifier is too long.");
-    return 0;
-  }
+    /*If a string didn't match any of the rules above are not matched*/
+.       {yERROR("Unknown token"); }
 
-  char *ident = (char *) calloc(yyleng + 1, sizeof(char));
-  memcpy(ident, yytext, yyleng);
 
-  yylval.str_val = ident;
-  return 1; 
-}
-
+%%
