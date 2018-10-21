@@ -56,47 +56,53 @@ extern int yyline;        /* variable holding current line number   */
 // Can access me from flex useing yyval
 
 %union {
-  int ival;
-  float fval;
-  char* sval;
+    char *str_val;
+    int int_val;
+    float float_val;
+    int vec;
+    int func; 
 }
 
 // Tokens are classified by the types acording to MiniGLSL specification.
 
-%token 
-  // Data types
-  INT BOOL FLOAT 
-  VEC2 VEC3 VEC4
-  BVEC2 BVEC3 BVEC4
-  IVEC2 IVEC3 IVEC4
-  // Function name
-  DP3 LIT RSQ
-  // Operators
-  PLUS MINUS MULT DIV POW // '+' '-' '*' '/' '^' '='
-  ASSIGN
-  // Logic operators
-  NOT AND OR 
-  EQ NEQ LT LE GT GE // LT: less than; LE: less than or equal; GT: greater than; GE: greater than or equal
-  // Brackets
-  // '(' ')' '[' ']' '{' '}'
-  LSB RSB LMB RMB LBB RBB
-  // Key words
-  IF ELSE WHILE
-  // Qualifiers
-  CONST 
-  // Separators
-  // ';' ','
-  SEMI COMMA
-  // Comment
-  // Boolean Literal
-  // BOOL_V
-  TRUE_V FALSE_V
-  // Integer Literal
-  INT_V
-  // Float Literal
-  FLOAT_V
-  // Identifier
-  ID 
+%token <vec> IVEC
+%token <vec> BVEC
+%token <vec> VEC
+
+%token <float_val>  FLOAT_V
+%token <int_val>    INT_V 
+%token <str_val>    ID 
+   
+// Data types
+%token INT BOOL FLOAT 
+%token FUNC
+
+// Binary operators
+%token AND OR EQ NEQ LEQ GEQ LT GT          
+// LT: less than; LEQ: less than or equal; GT: greater than; GE: greater than or equal.
+
+// Key words
+%token IF ELSE WHILE
+
+// Qualifiers
+%token CONST 
+
+// Boolean Literal
+TRUE_V FALSE_V
+
+
+// Operators' precedence and associativity
+// Should be the reverse order of that in Handout2
+%left       OR
+%left       AND
+%nonassoc   EQ NEQ LEQ GEQ '<' '>'
+%left       '+' '-'
+%left       '*' '/'
+%right      '^'
+%nonassoc   '!' UMINUS
+%left       '(' ')' '[' ']'
+
+
 
 
 %start    program
@@ -112,36 +118,6 @@ extern int yyline;        /* variable holding current line number   */
  *  Phase 3:
  *    1. Add code to rules for construction of AST.
  ***********************************************************************/
-program
-  :   tokens       
-  ;
-tokens
-  :  tokens token  
-  |      
-  ;
-// TODO: replace myToken with the token the you defined.
-token
-  :    
-    INT | BOOL | FLOAT | 
-    VEC2 | VEC3 | VEC4 |
-    BVEC2 | BVEC3 | BVEC4 |
-    IVEC2 | IVEC3 | IVEC4 |
-    DP3 | LIT | RSQ |
-    PLUS | MINUS | MULT | DIV | POW |
-    ASSIGN |
-    NOT | AND | OR | 
-    EQ | NEQ | LT | LE | GT | GE | 
-    LSB | RSB | LMB | RMB | LBB | RBB |
-    IF | ELSE | WHILE |
-    CONST |
-    SEMI | COMMA |
-    TRUE_V | FALSE_V |
-    INT_V |
-    FLOAT_V |
-    ID 
-  ;
-
-
 program:		
 	scope 										{yTRACE("program -> scope");}
 	; 
