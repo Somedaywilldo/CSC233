@@ -61,8 +61,6 @@ extern int yyline;        /* variable holding current line number   */
     float float_val;
     int vec;
     int func; 
-    int vec_val;	
-
 }
 
 // Tokens are classified by the types acording to MiniGLSL specification.
