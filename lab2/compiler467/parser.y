@@ -143,14 +143,14 @@ declaration:
 	;
 statement:
 	variable '=' expression ';'					{yTRACE("statement -> variable = expression;");}		|
-	'if' '(' expression ')' statement else_statement 
+	IF '(' expression ')' statement else_statement 
 												{yTRACE("statement -> if (expression) statement else_statement");}	|
-	'while' '(' expression ')' statement 		{yTRACE("statement -> while (expression) statement");}	|
+	WHILE '(' expression ')' statement 			{yTRACE("statement -> while (expression) statement");}	|
 	scope										{yTRACE("statement-> scope");}							|
 	';'
 	;
 else_statement:						
-	'else' statement 							{yTRACE("else_statement-> else statement");}			|
+	ELSE statement 								{yTRACE("else_statement-> else statement");}			|
 												{yTRACE("else_statement-> epsilon");}					
 	;
 type:
