@@ -29,6 +29,12 @@ void yyerror(const char* s);    /* what to do in case of error            */
 int yylex();              /* procedure for calling lexical analyzer */
 extern int yyline;        /* variable holding current line number   */
 
+enum {
+  DP3 = 0, 
+  LIT = 1, 
+  RSQ = 2
+};
+
 %}
 
 /***********************************************************************
@@ -78,8 +84,7 @@ extern int yyline;        /* variable holding current line number   */
 %token FUNC
 
 // Binary operators
-%token AND OR EQ NEQ LEQ GEQ LT GT          
-// LT: less than; LEQ: less than or equal; GT: greater than; GE: greater than or equal.
+%token AND OR EQ NEQ LEQ GEQ         
 
 // Key words
 %token IF ELSE WHILE
@@ -133,17 +138,13 @@ statements:
 	statements statement 						{yTRACE("statements -> statements statement");}			|
 												{yTRACE("statements -> epsilon");}
 	;
-/***************************/
-#XX
+
 declaration:									
-	type identifier ';'							{yTRACE("declaration -> epsilon");}						|
-	type identifier ' =' expression ';'			{yTRACE("statements -> epsilon");}						|
-	'const' type identifier ' =' expression ';'	{yTRACE("statements -> epsilon");}						|
-												{yTRACE("statements -> epsilon");}
+	type ID ';'									{yTRACE("declaration -> type ID ';'"); }				|
+	type ID '=' expression ';'					{yTRACE("declaration -> type ID '=' expression ';'"); }	|
+	'const' type ID ' =' expression ';'			{yTRACE("declaration -> CONST type ID '=' expression ';'"); }|
+												{yTRACE("declaration -> type epsilon ';'"); }
 	;
-
-
-
 statement:
 	variable '=' expression ';'					{yTRACE("statement -> variable = expression;");}		|
 	'if' '(' expression ')' statement else_statement 
@@ -156,68 +157,59 @@ else_statement:
 	'else' statement 							{yTRACE("else_statement-> else statement");}			|
 												{yTRACE("else_statement-> epsilon");}					
 	;
-/*********************************************/
-#XX
 type:
-	'int'|'ivec2'|'ivec3'|'ivec4'
-	'bool'|'bvec2'|'bvec3'|'bvec4'
-	'float'|'vec2'|'vec3'|'vec4'
-
-
-
-
+	INT 										{yTRACE("type -> INT");} 								|
+	IVEC 										{yTRACE("type -> IVEC");}								|
+	FLOAT 										{yTRACE("type -> FLOAT");} 								| 
+	VEC											{yTRACE("type -> VEC");}								|
+	BOOL 										{yTRACE("type -> BOOL");} 								| 
+	BVEC										{yTRACE("type -> BVEC");}								
+	;
 expression:
 	constructor									{yTRACE("expression -> constructor");}					|
-	function 									{yTRACE("expression -> constructor");}					|
-	integer_literal								{yTRACE("expression -> constructor");}					|
-	float_literal								{yTRACE("expression -> constructor");}					|
-	'true'|'false'								{yTRACE("expression -> constructor");}					|
+	function 									{yTRACE("expression -> function");}						|
+	INT_V										{yTRACE("expression -> INT_V");}						|
+	FLOAT_V										{yTRACE("expression -> FLOAT_V");}						|
+	TRUE_V										{yTRACE("expression -> TRUE_V");}						|
+	FALSE_V										{yTRACE("expression -> FALSE_V");}						|
 	variable									{yTRACE("expression -> variable");}						|
 	unary_op expression							{yTRACE("expression -> unary_op expression");}			|
 	expression binary_op expression 			{yTRACE("expression -> expression binary_op expression");}|
 	'(' expression ')'							{yTRACE("expression -> (expression)");}
 	;
-
-/*************************************/
-#XX
 variable:
-	identifier									{fTRACE("variable-> ID   __ID: %s", $1);}
-	identifier'['integer_literal']'
-
-
-
-
-
+	ID											{yTRACE("variable -> ID");}								|
+	ID '[' INT_V ']'							{yTRACE("variable -> ID '[' INT_C ']'");}
+	;
 unary_op:
-	'!'											{yTRACE("unary_op -> !");}								|
-	'−'											{yTRACE("unary_op -> -");}
+	'!'											{yTRACE("unary_op -> '!'");}							|
+	'−' %prec UMINUS							{yTRACE("unary_op -> UMINUS");}
 	;
 binary_op:
-	'&&'										{yTRACE("binary_op -> &&");}							|
-	'||'										{yTRACE("binary_op -> ||");}							|
-	'=='										{yTRACE("binary_op -> ==");}							|
-	'!=' 										{yTRACE("binary_op -> !=");}							|
-	'<' 										{yTRACE("binary_op -> <");}								|
-	'<='										{yTRACE("binary_op -> <=");}							|
-	'>' 										{yTRACE("binary_op -> >");}								|
-	'<'											{yTRACE("binary_op -> <");}								|
-	'+' 										{yTRACE("binary_op -> +");}								|
-	'−' 										{yTRACE("binary_op -> -");}								|
-	'∗' 										{yTRACE("binary_op -> *");}								|
-	'/'											{yTRACE("binary_op -> /");}								|
+	AND											{yTRACE("binary_op -> AND");}							|
+	OR											{yTRACE("binary_op -> OR");}							|
+	EQ											{yTRACE("binary_op -> EQ");}							|
+	NEQ 										{yTRACE("binary_op -> NEQ");}							|
+	LEQ											{yTRACE("binary_op -> LEQ");}							|
+	GEQ											{yTRACE("binary_op -> GEQ");}							|
+	'<' 										{yTRACE("binary_op -> '<'");}							|
+	'>' 										{yTRACE("binary_op -> '>'");}							|
+	'+' 										{yTRACE("binary_op -> '+'");}							|
+	'−' 										{yTRACE("binary_op -> '-'");}							|
+	'∗' 										{yTRACE("binary_op -> '*'");}							|
+	'/'											{yTRACE("binary_op -> '/'");}							|
+	'^'											{yTRACE("binary_op -> '^'");}							
 	;
 constructor:
-	type '(' arguments ')'						{yTRACE("constructor -> /");}							
+	type '(' arguments ')'						{yTRACE("constructor -> type '(' arguments ')'");}							
 	;
-/***************************************/
-#XX
 function:
-	function_name '(' arguments_opt ')'			
-
-
-#XX
+	function_name '(' arguments_opt ')'			{ yTRACE("function -> function_name '(' arguments_opt ')'"); }		
+	;
 function_name:
-	'dp3'|'lit'|'rsq'
+	DP3											{ yTRACE("function_name -> function_name '(' arguments_opt ')'"); }	
+	LIT
+	RSQ
 
 arguments_opt:
 	arguments 									{yTRACE("arguments_opt -> arguments");}					|					| 
