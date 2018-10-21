@@ -98,8 +98,8 @@ while   {yRET_TRACE(WHILE)}
 
 const   {yRET_TRACE(CONST)}
 
-";"     {yRET_TRACE(SEMI)}
-","     {yRET_TRACE(COMMA)}
+";"     {yRET_TRACE(';')}
+","     {yRET_TRACE(',')}
 
 true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
 false   {yRET_TRACE(FALSE_V)}
