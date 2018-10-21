@@ -76,6 +76,8 @@ enum {
 %token          IF WHILE ELSE
 %token          AND OR NEQ EQ LEQ GEQ
 
+%token			RSQ LIT DP3
+
 // links specific values of tokens to yyval
 %token <as_vec>   VEC_T
 %token <as_vec>   BVEC_T
@@ -173,7 +175,8 @@ unary_op
 binary_op
 	:	AND { yTRACE("binary_op -> AND"); } | OR { yTRACE("binary_op -> OR"); } | EQ { yTRACE("binary_op -> EQ"); } | NEQ { yTRACE("binary_op -> NEQ"); }
 	| 	'<' { yTRACE("binary_op -> '<'"); } | LEQ { yTRACE("binary_op -> LEQ"); } | '>' { yTRACE("binary_op -> '>'"); } | GEQ { yTRACE("binary_op -> GEQ"); }
-	| 	'+' { yTRACE("binary_op -> '+'"); } | '-' { yTRACE("binary_op -> '-'"); } | '*' { yTRACE("binary_op -> '*'"); } | '/' { yTRACE("binary_op -> '/'"); } | '^'{ yTRACE("binary_op -> '^'"); }
+	| 	'+' { yTRACE("binary_op -> '+'"); } | '-' { yTRACE("binary_op -> '-'"); } 
+	| '*' { yTRACE("binary_op -> '*'"); } | '/' { yTRACE("binary_op -> '/'"); } | '^'{ yTRACE("binary_op -> '^'"); }
 	;
 constructor
 	:	type '(' arguments ')'					{ yTRACE("constructor -> type '(' arguments ')'"); }

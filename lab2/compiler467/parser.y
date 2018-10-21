@@ -55,12 +55,12 @@ extern int yyline;        /* variable holding current line number   */
 // TODO:Modify me to add more data types
 // Can access me from flex useing yyval
 
+//vec means the number of elements-1
 %union {
     char *str_val;
     int int_val;
     float float_val;
     int vec;
-    int func; 
 }
 
 // Tokens are classified by the types acording to MiniGLSL specification.
@@ -73,6 +73,8 @@ extern int yyline;        /* variable holding current line number   */
 %token <int_val>    INT_V 
 %token <str_val>    ID 
    
+%token			RSQ LIT DP3
+
 // Data types
 %token INT BOOL FLOAT 
 
@@ -93,7 +95,8 @@ TRUE_V FALSE_V
 // Should be the reverse order of that in Handout2
 %left       OR
 %left       AND
-%nonassoc   EQ NEQ LEQ GEQ '<' '>'
+%left		'&'
+%nonassoc   '=' EQ NEQ LEQ GEQ '<' '>'
 %left       '+' '-'
 %left       '*' '/'
 %right      '^'
@@ -135,7 +138,7 @@ statements:
 declaration:									
 	type ID ';'									{yTRACE("declaration -> type ID ';'"); }				|
 	type ID '=' expression ';'					{yTRACE("declaration -> type ID '=' expression ';'"); }	|
-	'const' type ID ' =' expression ';'			{yTRACE("declaration -> CONST type ID '=' expression ';'"); }|
+	'const' type ID '=' expression ';'			{yTRACE("declaration -> CONST type ID '=' expression ';'"); }|
 												{yTRACE("declaration -> type epsilon ';'"); }
 	;
 statement:
@@ -199,7 +202,7 @@ constructor:
 function:
 	function_name '(' arguments_opt ')'			{yTRACE("function -> function_name '(' arguments_opt ')'");}		
 	;
-function_name
+function_name:
 	DP3											{yTRACE("function_name -> DP3");}						|
 	LIT											{yTRACE("function_name -> LIT");}						|
 	RSQ											{yTRACE("function_name -> RSQ");}						|
