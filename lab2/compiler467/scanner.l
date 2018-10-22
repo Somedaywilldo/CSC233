@@ -80,7 +80,7 @@ ivec3   											{ yylval.vec = 2; yRET_TRACE(IVEC); }
 ivec4   											{ yylval.vec = 3; yRET_TRACE(IVEC); }
 
 vec2    											{ yylval.vec = 1; yRET_TRACE(VEC); }
-vec3    											{ yylval.vec = 2; yRET_TRACE(vec); }
+vec3    											{ yylval.vec = 2; yRET_TRACE(VEC); }
 vec4    											{ yylval.vec = 3; yRET_TRACE(VEC); }
 
 bvec2   											{ yylval.vec = 1; yRET_TRACE(BVEC); }
