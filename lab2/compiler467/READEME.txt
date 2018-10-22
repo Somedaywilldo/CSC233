@@ -1,0 +1,31 @@
+READEME
+
+Written By Yihang Yin.
+
+
+Dear TA, this file may help you test our parser more easily.
+
+For tests, just type in this in shell:
+
+$ sh run_test.sh
+
+this will compile the compiler and run several tests in the tests/ directory.
+
+
+We designed several test cases:
+
+Positive Tests (should pass):
+
+pass_1: Just a right code.
+
+
+Negative Tests (should fail):
+
+fail_1: Wrong declaration.
+fail_2: Missing data type.
+fail_3: Using data type as variable name.
+fail_4: Unpaired brackets.
+fail_5: Using digits as variable name.
+fail_6: Wrong syntax.
+
+
