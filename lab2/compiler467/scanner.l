@@ -18,7 +18,7 @@
 #define yyinput      input
 #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
 #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; }
-#define yOUT(x)      { yTRACE(x); return x; }
+#define yRET_TRACE(x)      { yTRACE(x); return x; }
 
 /* forward declarations */
 int ParseComment(void);
@@ -38,44 +38,47 @@ int yyline = 1;
 \r?\n                         { yyline++; }
 <<EOF>>                       { yyterminate(); }
 
-","			                      { yOUT(yytext[0]); }
-[+\-*/\^]                     { yOUT(yytext[0]); }
-[()[\]{}]                     { yOUT(yytext[0]); }
-[<>=!]                        { yOUT(yytext[0]); }
-";"                           { yOUT(yytext[0]); }
-"&&"                          { yOUT(AND); }
-"||"                          { yOUT(OR); }
-"!="                          { yOUT(NEQ); }
-"<="                          { yOUT(LEQ); }
-">="                          { yOUT(GEQ); }
-"=="                          { yOUT(EQ); }
+","			                      { yRET_TRACE(yytext[0]); }
+[+\-*/\^]                     { yRET_TRACE(yytext[0]); }
+[()[\]{}]                     { yRET_TRACE(yytext[0]); }
+[<>=!]                        { yRET_TRACE(yytext[0]); }
+";"                           { yRET_TRACE(yytext[0]); }
+"&&"                          { yRET_TRACE(AND); }
+"||"                          { yRET_TRACE(OR); }
+"!="                          { yRET_TRACE(NEQ); }
+"<="                          { yRET_TRACE(LEQ); }
+">="                          { yRET_TRACE(GEQ); }
+"=="                          { yRET_TRACE(EQ); }
 
-const                         { yOUT(CONST); }
-bool                          { yOUT(BOOL); }
-int                           { yOUT(INT); }
-float                         { yOUT(FLOAT); }
-vec(2|3|4)                    { yylval.vec = yytext[3] - '1'; yOUT(VEC); }
-ivec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(IVEC); }
-bvec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yOUT(BVEC); }
+if                            { yRET_TRACE(IF); }
+else                          { yRET_TRACE(ELSE); }
+while                         { yRET_TRACE(WHILE); }
 
-if                            { yOUT(IF); }
-else                          { yOUT(ELSE); }
-while                         { yOUT(WHILE); }
+const                         { yRET_TRACE(CONST); }
+bool                          { yRET_TRACE(BOOL); }
+int                           { yRET_TRACE(INT); }
+float                         { yRET_TRACE(FLOAT); }
+vec(2|3|4)                    { yylval.vec = yytext[3] - '1'; yRET_TRACE(VEC); }
+ivec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yRET_TRACE(IVEC); }
+bvec(2|3|4)                   { yylval.vec = yytext[4] - '1'; yRET_TRACE(BVEC); }
 
-dp3                           { yOUT(DP3); }
-rsq                           { yOUT(RSQ); }
-lit                           { yOUT(LIT); }
+true                          { yRET_TRACE(TRUE_V); }
+false                         { yRET_TRACE(FALSE_V); }
 
-true                          { yOUT(TRUE_V); }
-false                         { yOUT(FALSE_V); }
+dp3                           { yRET_TRACE(DP3); }
+rsq                           { yRET_TRACE(RSQ); }
+lit                           { yRET_TRACE(LIT); }
 
-0                             { yylval.int_val = 0; yOUT(INT_V); }                  
-[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_V); } yyterminate(); }
+0                             { yylval.int_val = 0; yRET_TRACE(INT_V); }                  
+[1-9][0-9]*                   { if(ParseInt()) { yRET_TRACE(INT_V); } yyterminate(); }
 
-(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
-\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_V); } yyterminate(); }
+(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yRET_TRACE(FLOAT_V); } yyterminate(); }
+\.[0-9]+                      { if(ParseFloat()) { yRET_TRACE(FLOAT_V); } yyterminate(); }
 
-[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yOUT(ID); } yyterminate(); }
+[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yRET_TRACE(ID); } yyterminate(); }
+
+
+
 
 0[0-9]+                       { yERROR("Octal numbers are not allowed.");  yyterminate(); }
 [0-9]+[a-zA-Z_]+              { yERROR("Integers and identifiers/keywords must be separated by whitespace.");  yyterminate(); }
