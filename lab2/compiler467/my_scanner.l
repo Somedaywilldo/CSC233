@@ -79,23 +79,18 @@ rsq     {yRET_TRACE(RSQ)}
 [+\-*/\^]   {yRET_TRACE(yytext[0])}
 
 
-"!"     {yRET_TRACE(NOT)}
+"!"     {yRET_TRACE('!')}
 "&&"    {yRET_TRACE(AND)}
 "||"    {yRET_TRACE(OR)}
 
 "=="    {yRET_TRACE(EQ)}
 "!="    {yRET_TRACE(NEQ)}
-"<"     {yRET_TRACE(LT)}
-"<="    {yRET_TRACE(LE)}
-">"     {yRET_TRACE(GT)}
-">="    {yRET_TRACE(GE)}
+"<"     {yRET_TRACE('<')}
+"<="    {yRET_TRACE(LEQ)}
+">"     {yRET_TRACE('>')}
+">="    {yRET_TRACE(GEQ)}
 
-"("     {yRET_TRACE(LSB)}
-")"     {yRET_TRACE(RSB)}
-"["     {yRET_TRACE(LMB)}
-"]"     {yRET_TRACE(RMB)}
-"{"     {yRET_TRACE(LBB)}
-"}"     {yRET_TRACE(RBB)}
+[()[\]{}] { yRET_TRACE(yytext[0])}
 
 if      {yRET_TRACE(IF)}
 else    {yRET_TRACE(ELSE)}
@@ -103,8 +98,8 @@ while   {yRET_TRACE(WHILE)}
 
 const   {yRET_TRACE(CONST)}
 
-";"     {yRET_TRACE(SEMI)}
-","     {yRET_TRACE(COMMA)}
+";"     {yRET_TRACE(';')}
+","     {yRET_TRACE(',')}
 
 true    {yRET_TRACE(TRUE_V)} /*TRUE VALUE*/
 false   {yRET_TRACE(FALSE_V)}
