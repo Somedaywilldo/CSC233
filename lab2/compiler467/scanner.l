@@ -38,11 +38,27 @@ int yyline = 1;
 \r?\n                         { yyline++; }
 <<EOF>>                       { yyterminate(); }
 
-","			                      { yRET_TRACE(yytext[0]); }
-[+\-*/\^]                     { yRET_TRACE(yytext[0]); }
-[()[\]{}]                     { yRET_TRACE(yytext[0]); }
-[<>=!]                        { yRET_TRACE(yytext[0]); }
-";"                           { yRET_TRACE(yytext[0]); }
+","			                      { yRET_TRACE(','); }
+"+"	                          { yRET_TRACE('+'); }
+"-"	                          { yRET_TRACE('-'); }
+"*"	                          { yRET_TRACE('*'); }
+"/"	                          { yRET_TRACE('/'); }
+"^"	                          { yRET_TRACE('^'); }
+
+"("	                          { yRET_TRACE('('); }
+")"	                          { yRET_TRACE(')'); }
+"["	                          { yRET_TRACE('['); }
+"]"	                          { yRET_TRACE(']'); }
+"{"	                          { yRET_TRACE('{'); }
+"}"	                          { yRET_TRACE('}'); }
+
+"<"	                          { yRET_TRACE('<'); }
+">"	                          { yRET_TRACE('>'); }
+"="	                          { yRET_TRACE('='); }
+"!"	                          { yRET_TRACE('!'); }
+
+";"	                          { yRET_TRACE(';'); }
+
 "&&"                          { yRET_TRACE(AND); }
 "||"                          { yRET_TRACE(OR); }
 "!="                          { yRET_TRACE(NEQ); }
