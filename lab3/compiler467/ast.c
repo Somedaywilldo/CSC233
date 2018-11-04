@@ -1,14 +1,6 @@
 /***********************************************************************
  * Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
  * Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
- *
- * compiler467.c
- *
- * This is the main driver program for the CSC467F course project
- * compiler.  It handles compiler command line options and
- * initialization, calls the parser to run the compilation and then
- * invokes the pseudo machine interpreter to execute the compiled
- * program.
  **********************************************************************/
 
 #include <stdio.h>
@@ -63,4 +55,6 @@ void ast_free(node *ast)
 
 void ast_print(node *ast)
 {
+	// ast_traversal(ast, print_node_pre, print_node_post);
+    printf("\n");
 }

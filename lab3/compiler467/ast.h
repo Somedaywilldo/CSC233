@@ -29,7 +29,7 @@ typedef enum {
   SCOPE_NODE            = (1 << 0),
   
   EXPRESSION_NODE       = (1 << 2),
-  UNARY_EXPRESION_NODE  = (1 << 2) | (1 << 3),
+  UNARY_EXPRESSION_NODE = (1 << 2) | (1 << 3),
   BINARY_EXPRESSION_NODE= (1 << 2) | (1 << 4),
 
   BOOL_NODE             = (1 << 3) | (1 << 4), //added
@@ -45,6 +45,7 @@ typedef enum {
   CONSTRUCTOR_NODE      = (1 << 2) | (1 << 10),
 
   STATEMENT_NODE        = (1 << 1),
+  OPTIONAL_STATEMENT_NODE=(1 << 2) | (1 << 12), //added
   STATEMENTS_NODE       = (1 << 1) | (1 << 12), //added
 
 
@@ -66,19 +67,33 @@ struct node_ {
   node_kind kind;
 
   union {
-    struct {
-      // declarations?
-      // statements?
-    } scope;
+    // struct {
+    //   node *declarations;
+    //   node *statements;
+    // } scope;
 
-    struct {
+    // struct{
+    //   node *scope;
+    // } nested_scope;
 
-    } expr;
+    // struct{
+    //   node *declartions;
+    //   node *declartion;
+    // } declarations;
 
-    struct {
-      int op;
-      node *right;
-    } unary_expr;
+    // struct{
+    //   int is_const;
+    //   char *id;
+    //   node *type;
+    //   node *expr;
+    // } declaration;
+
+    // expressions?????
+
+    // struct {
+    //   int op;
+    //   node *right;
+    // } unary_expr;
 
     struct {
       int op;
@@ -87,45 +102,58 @@ struct node_ {
     } binary_expr;
 
     // TODO: add more type of nodes
-    # int 
-    # float
+    // bool bool_val;
+    // int int_val;
+    // float float_val;
+   
+    //type_node????
+    // struct {
+    //   # int is_const
+    //   int is_vec;
+    // } type;
 
-    struct {
+    // struct {
+    //   char* id;
+    //   //where <identifier> the exact name of the variable.
+    // } ident;
 
-    } ident;
+    // struct {
+    //   node* type;
+    //   char* id; 
+    // } var;
 
-    struct {
+    // struct {
+    //   int name;
+    //   node *args;
+    // } func;
 
-    } var;
+    // # struct{
 
-    struct{
+    // } constructor;
 
-    } func;
+    // struct{
+      
+    // } stmt;
 
-    # struct{
+    // struct{
+    //   node *stmts;
+    //   node *stmt;
+    // } stmts;
 
-    } constructor;
+    // struct{
+    //   node *cond;
+    //   node *then_stmt;
+    //   node *else_stmt;
+    // } if_stmt;
 
-    struct{
-    
-    } stmt;
+    // struct{
+    //   # struct type_s type;
+    //   node *variable;
+    //   node *expr;
+    // } assignment;
 
-    struct{
-
-    } if_stmt;
-
-    struct{
-    
-    } assignment;
-
-    struct{
-
-    } nested_scope;
-
-    struct{
-
-    } declaration;
-
+    // struct{
+    // } nested_scope;
   };
 };
 
