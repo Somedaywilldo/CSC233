@@ -35,7 +35,7 @@ typedef enum {
 
   STATEMENT_NODE        = (1 << 1),
   IF_STATEMENT_NODE     = (1 << 1) | (1 << 11),
-  WHILE_STATEMENT_NODE  = (1 << 1) | (1 << 12),
+  // WHILE_STATEMENT_NODE  = (1 << 1) | (1 << 12),
   ASSIGNMENT_NODE       = (1 << 1) | (1 << 13),
   NESTED_SCOPE_NODE     = (1 << 1) | (1 << 14),
 
@@ -52,7 +52,11 @@ struct node_ {
       // declarations?
       // statements?
     } scope;
-  
+
+    struct {
+      
+    } expr;
+
     struct {
       int op;
       node *right;
@@ -65,6 +69,45 @@ struct node_ {
     } binary_expr;
 
     // TODO: add more type of nodes
+    # int 
+    # float
+
+    struct {
+
+    } ident;
+
+    struct {
+
+    } var;
+
+    struct{
+
+    } func;
+
+    # struct{
+
+    } const;
+
+    struct{
+    
+    } stmt;
+
+    struct{
+
+    } if_stmt;
+
+    struct{
+    
+    } assignment;
+
+    struct{
+
+    } nested_scope;
+
+    struct{
+
+    } declaration;
+
   };
 };
 
