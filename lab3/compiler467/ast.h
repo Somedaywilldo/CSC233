@@ -31,20 +31,33 @@ typedef enum {
   EXPRESSION_NODE       = (1 << 2),
   UNARY_EXPRESION_NODE  = (1 << 2) | (1 << 3),
   BINARY_EXPRESSION_NODE= (1 << 2) | (1 << 4),
+
+  BOOL_NODE             = (1 << 3) | (1 << 4), //added
   INT_NODE              = (1 << 2) | (1 << 5), 
   FLOAT_NODE            = (1 << 2) | (1 << 6),
+  TYPE_NODE             = (1 << 3) | (1 << 6), //added
+
   IDENT_NODE            = (1 << 2) | (1 << 7),
   VAR_NODE              = (1 << 2) | (1 << 8),
   FUNCTION_NODE         = (1 << 2) | (1 << 9),
+  ARGUMENTS_NODE        = (1 << 3) | (1 << 9), //added
+
   CONSTRUCTOR_NODE      = (1 << 2) | (1 << 10),
 
   STATEMENT_NODE        = (1 << 1),
+  STATEMENTS_NODE       = (1 << 1) | (1 << 12), //added
+
+
+
   IF_STATEMENT_NODE     = (1 << 1) | (1 << 11),
   // WHILE_STATEMENT_NODE  = (1 << 1) | (1 << 12),
   ASSIGNMENT_NODE       = (1 << 1) | (1 << 13),
   NESTED_SCOPE_NODE     = (1 << 1) | (1 << 14),
+  NESTED_EXPRESSION_NODE= (1 << 2) | (1 << 14), //added
 
-  DECLARATION_NODE      = (1 << 15)
+
+  DECLARATION_NODE      = (1 << 15),
+  DECLARATIONS_NODE     = (1 << 1) | (1 << 15)  //added
 } node_kind;
 
 struct node_ {
