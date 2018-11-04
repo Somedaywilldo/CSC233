@@ -170,7 +170,19 @@ expression:
 	FALSE_V										{yTRACE("expression -> FALSE_V");}						|
 	variable									{yTRACE("expression -> variable");}						|
 	unary_op expression							{yTRACE("expression -> unary_op expression");}			|
-	expression binary_op expression 			{yTRACE("expression -> expression binary_op expression");}|
+	expression AND expression					{yTRACE("expression -> expression AND expression");}	|
+	expression OR  expression					{yTRACE("expression -> expression OR  expression");}	|
+	expression EQ  expression					{yTRACE("expression -> expression EQ  expression");}	|
+	expression NEQ expression 					{yTRACE("expression -> expression NEQ expression");}	|
+	expression LEQ expression					{yTRACE("expression -> expression LEQ expression");}	|
+	expression GEQ expression					{yTRACE("expression -> expression GEQ expression");}	|
+	expression '<' expression 					{yTRACE("expression -> expression '<' expression");}	|
+	expression '>' expression 					{yTRACE("expression -> expression '>' expression");}	|
+	expression '+' expression 					{yTRACE("expression -> expression '+' expression");}	|
+	expression '−' expression 					{yTRACE("expression -> expression '-' expression");}	|
+	expression '∗' expression 					{yTRACE("expression -> expression '*' expression");}	|
+	expression '/' expression					{yTRACE("expression -> expression '/' expression");}	|
+	expression '^' expression					{yTRACE("expression -> expression '^' expression");}	|
 	'(' expression ')'							{yTRACE("expression -> (expression)");}
 	;
 variable:
@@ -180,21 +192,6 @@ variable:
 unary_op:
 	'!'											{yTRACE("unary_op -> '!'");}							|
 	'−' %prec UMINUS							{yTRACE("unary_op -> UMINUS");}
-	;
-binary_op:
-	AND											{yTRACE("binary_op -> AND");}							|
-	OR											{yTRACE("binary_op -> OR");}							|
-	EQ											{yTRACE("binary_op -> EQ");}							|
-	NEQ 										{yTRACE("binary_op -> NEQ");}							|
-	LEQ											{yTRACE("binary_op -> LEQ");}							|
-	GEQ											{yTRACE("binary_op -> GEQ");}							|
-	'<' 										{yTRACE("binary_op -> '<'");}							|
-	'>' 										{yTRACE("binary_op -> '>'");}							|
-	'+' 										{yTRACE("binary_op -> '+'");}							|
-	'−' 										{yTRACE("binary_op -> '-'");}							|
-	'∗' 										{yTRACE("binary_op -> '*'");}							|
-	'/'											{yTRACE("binary_op -> '/'");}							|
-	'^'											{yTRACE("binary_op -> '^'");}							
 	;
 constructor:
 	type '(' arguments ')'						{yTRACE("constructor -> type '(' arguments ')'");}							
