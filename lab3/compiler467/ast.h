@@ -1,8 +1,13 @@
-
 #ifndef AST_H_
 #define AST_H_ 1
 
 #include <stdarg.h>
+
+/***********************************************************************
+ * Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
+ * Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
+ **********************************************************************/
+
 
 // Dummy node just so everything compiles, create your own node/nodes
 //
@@ -54,7 +59,7 @@ struct node_ {
     } scope;
 
     struct {
-      
+
     } expr;
 
     struct {
@@ -86,7 +91,7 @@ struct node_ {
 
     # struct{
 
-    } const;
+    } constructor;
 
     struct{
     
