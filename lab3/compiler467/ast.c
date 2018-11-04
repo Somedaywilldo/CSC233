@@ -56,5 +56,5 @@ void ast_free(node *ast)
 void ast_print(node *ast)
 {
 	// ast_traversal(ast, print_node_pre, print_node_post);
-    printf("FUCK! THIS IS HARD!");
+    printf("THIS IS HARD!\n");
 }
