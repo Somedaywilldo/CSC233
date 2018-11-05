@@ -20,8 +20,9 @@
 
 #include "common.h"
 #include "ast.h"
-#include "symbol.h"
-#include "semantic.h"
+
+// #include "symbol.h"
+// #include "semantic.h"
 
 #define YYERROR_VERBOSE
 #define yTRACE(x)    { if (traceParser) fprintf(traceFile, "%s\n", x); }
