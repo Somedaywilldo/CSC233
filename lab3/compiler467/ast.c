@@ -175,8 +175,10 @@ const char* type_to_str(struct type_attribute *type){
 
 const char *op_to_str(int op) {
   switch(op) {
-    CASE_TOKEN_TO_STR(-);
-    CASE_TOKEN_TO_STR(!);
+    case '-':
+      return "-";
+    case '!':
+      return "!";
     case AND:
       return "&&";
     case OR:
@@ -185,16 +187,22 @@ const char *op_to_str(int op) {
       return "==";
     case NEQ:
       return "!=";
-    CASE_TOKEN_TO_STR(<);
+    case '<':
+      return "<";
     case LEQ:
       return "<=";
-    CASE_TOKEN_TO_STR(>);
+    case '>':
+      return ">";
     case GEQ:
       return ">=";
-    CASE_TOKEN_TO_STR(+);
-    CASE_TOKEN_TO_STR(*);
-    CASE_TOKEN_TO_STR(/);
-    CASE_TOKEN_TO_STR(^);
+    case '+':
+      return "+";
+    case '*':
+      return "*";
+    case '/':
+      return "/";
+    case '^':
+      return "^";
     default:
       return "";
   }
