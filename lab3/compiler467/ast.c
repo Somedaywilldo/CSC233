@@ -230,12 +230,12 @@ void ast_print_node(node *ast, int depth){
       //type and expr is another two node
       break;
 
-    case UNARY_EXPRESION_NODE:
+    case UNARY_EXPRESSION_NODE:
       print_tab(depth);
       fprintf(dumpFile, "UNARY %s %s", type_to_str(&ast->type), op_to_str(ast->unary_expr.op));
       break;
 
-    case BINARY_EXPRESION_NODE:
+    case BINARY_EXPRESSION_NODE:
       print_tab(depth);
       fprintf(dumpFile, "BINARY %s %s", type_to_str(&ast->type), op_to_str(ast->binary_expr.op));
       break;
@@ -246,7 +246,7 @@ void ast_print_node(node *ast, int depth){
         fprintf(dumpFile, "INDEX %s %s %d", type_to_str(&ast->type), ast->var_node.id, ast->var_node.index);
       } 
       else {
-        fprintf(dumpFile, "%s", cur->var_node.id);
+        fprintf(dumpFile, "%s", ast->variable_node.id);
       }
       break;
 
