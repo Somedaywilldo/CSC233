@@ -97,14 +97,15 @@ node *ast_allocate(node_kind kind, ...)
       ast->float_val = (float) va_arg(args, double);
       break;
     
-    case TYPE_NODE:
+    case TYPE_NODE:{
       ast->type.type_token = va_arg(args, int);
 	    int vec_index = va_arg(args, int);
 	    if(ast->type.type_token == FLOAT || ast->type.type_token == BOOL|| ast->type.type_token == INT)
 		    ast->type.vec_size = 1;
 	    else
 		    ast->type.vec_size = vec_index + 1;
-	  break;
+	    break;
+    }
     
     case ASSIGNMENT_NODE:
       ast->assignment.variable = va_arg(args, node *);
