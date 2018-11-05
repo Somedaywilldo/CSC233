@@ -71,8 +71,8 @@ struct node_ {
     } scope;
 
     struct{
-      node *declartions;
-      node *declartion;
+      node *declarations;
+      node *declaration;
     } declarations;
     
     struct{
