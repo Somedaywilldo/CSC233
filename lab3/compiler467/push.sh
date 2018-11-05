@@ -1,3 +1,3 @@
 git add -A 
-git commit -m "ast.c debug"
+git commit -m "testing ast.c"
 git push
