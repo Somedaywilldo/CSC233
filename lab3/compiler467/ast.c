@@ -29,15 +29,73 @@ node *ast_allocate(node_kind kind, ...)
 
 	switch (kind)
 	{
+    case SCOPE_NODE:
+      ast->scope.declarations = va_arg(args, node *); 
+      ast->scope.stmts = va_arg(args, node *);        
+      break;
 
-		// ...
+    case DECLARATIONS_NODE:
+      ast->declarations.declarations = va_arg(args, node *); 
+      ast->declarations.declaration = va_arg(args, node *);        
+      break;
 
+    case STATEMENTS_NODE:
+      ast->stmts.stmts = va_arg(args, node *); 
+      ast->stmts.stmt = va_arg(args, node *);        
+      break;
+
+    case DECLARATION_NODE:
+      ast->declaration.is_const = va_arg(args, int); 
+      ast->declaration.id = va_arg(args, char *);  
+      ast->declaration.type = va_arg(args, node *);        
+      ast->declaration.expr = va_arg(args, node *);        
+      break;
+
+    case UNARY_EXPRESION_NODE:
+			ast->unary_expr.op = va_arg(args, int);
+			ast->unary_expr.right = va_arg(args, node *);
+			break;
+		
 		case BINARY_EXPRESSION_NODE:
 			ast->binary_expr.op = va_arg(args, int);
 			ast->binary_expr.left = va_arg(args, node *);
 			ast->binary_expr.right = va_arg(args, node *);
 			break;
 
+    case VARIABLE_NODE:
+			ast->variable.id = va_arg(args, char *);
+			ast->variable.is_array = va_arg(args, int);
+			ast->variable.index = va_arg(args, int);
+			break;
+    
+    case NESTED_SCOPE_NODE:
+      ast->nested_scope.scope = va_arg(args, node *);
+			break;
+
+    case NESTED_EXPRESSION_NODE:
+      ast->nested_expr.expr = va_arg(args, node *);
+			break;
+    
+    case BOOL_NODE:
+      ast->type.is_const = 1;
+      ast->type.type_token = BOOL;##
+      ast->type.vec = 1;
+      ast->bool_val = va_arg(args, int);
+	  break;
+
+  case INT_NODE:
+	  ast->type.is_const = 1;
+	  ast->type.type_code = INT;##
+	  ast->type.vec = 1;
+	  ast->int_val = va_arg(args, int);
+	  break;
+
+  case FLOAT_NODE:
+	  ast->type.is_const = 1;
+	  ast->type.type_code = FLOAT;##
+	  ast->type.vec = 1;
+  	  ast->float_val = (float) va_arg(args, double);
+  	  break;
 		// ...
 
 		default:

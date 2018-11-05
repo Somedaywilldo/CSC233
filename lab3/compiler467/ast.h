@@ -38,7 +38,7 @@ typedef enum {
   TYPE_NODE             = (1 << 3) | (1 << 6), //added
 
   IDENT_NODE            = (1 << 2) | (1 << 7),
-  VAR_NODE              = (1 << 2) | (1 << 8),
+  VARIABLE_NODE              = (1 << 2) | (1 << 8),
   FUNCTION_NODE         = (1 << 2) | (1 << 9),
   ARGUMENTS_NODE        = (1 << 3) | (1 << 9), //added
 
@@ -75,7 +75,7 @@ struct node_ {
   union {
     struct {
       node *declarations;
-      node *statements;
+      node *stmts;
     } scope;
 
     struct{
