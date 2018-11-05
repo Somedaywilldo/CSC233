@@ -59,14 +59,6 @@ typedef enum {
 } node_kind;
 
 
-//time enum
-
-struct type_attribute {
-  int type_token;
-  int vec;
-  int is_const;
-};
-
 struct node_ {
 
   // an example of tagging each node with a type
@@ -124,6 +116,12 @@ struct node_ {
     int bool_val;
     int int_val;
     float float_val;
+
+    struct {
+      int type_attribute;
+      int vec_size;
+      int is_const; 
+    } type;
 
     struct {
       node *type; // XX

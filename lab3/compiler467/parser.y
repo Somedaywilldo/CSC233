@@ -60,14 +60,14 @@ extern int yyline;        /* variable holding current line number   */
     char *str_val;
     int int_val;
     float float_val;
-    int vec;
+    int vec_size;
 }
 
 // Tokens are classified by the types acording to MiniGLSL specification.
 
-%token <vec> IVEC
-%token <vec> BVEC
-%token <vec> VEC
+%token <vec_size> IVEC
+%token <vec_size> BVEC
+%token <vec_size> VEC
 
 %token <float_val>  FLOAT_V
 %token <int_val>    INT_V 

@@ -78,28 +78,69 @@ node *ast_allocate(node_kind kind, ...)
     
     case BOOL_NODE:
       ast->type.is_const = 1;
-      ast->type.type_token = BOOL;##
-      ast->type.vec = 1;
+      ast->type.type_token = BOOL;
+      ast->type.vec_size = 1;
       ast->bool_val = va_arg(args, int);
 	  break;
 
-  case INT_NODE:
-	  ast->type.is_const = 1;
-	  ast->type.type_code = INT;##
-	  ast->type.vec = 1;
-	  ast->int_val = va_arg(args, int);
-	  break;
+    case INT_NODE:
+      ast->type.is_const = 1;
+      ast->type.type_code = INT;
+      ast->type.vec_size = 1;
+      ast->int_val = va_arg(args, int);
+      break;
 
-  case FLOAT_NODE:
-	  ast->type.is_const = 1;
-	  ast->type.type_code = FLOAT;##
-	  ast->type.vec = 1;
-  	  ast->float_val = (float) va_arg(args, double);
-  	  break;
-		// ...
+    case FLOAT_NODE:
+      ast->type.is_const = 1;
+      ast->type.type_code = FLOAT;
+      ast->type.vec_size = 1;
+      ast->float_val = (float) va_arg(args, double);
+      break;
+    
+    case TYPE_NODE:
+      ast->type.type_code = va_arg(args, int);
+	    int vec_index = va_arg(args, int);
+	    if(ast->type.type_code == FLOAT || ast->type.type_code == BOOL|| ast->type.type_code == INT)
+		    ast->type.vec_size = 1;
+	    else
+		    ast->type.vec_size = vec_index + 1;
+	  break;
+    
+    case ASSIGNMENT_NODE:
+      ast->assignment.type = va_arg(args, node *);
+      ast->assignment.variable = va_arg(args, node *);
+      ast->assignment.expr = va_arg(args, node *);
+      break;
+
+    case CONSTRUCTOR_NODE:
+      ast->constructor.type = va_arg(args, node *);
+      ast->constructor.args = va_arg(args, node *);
+      break;
+  
+    case ARGUMENTS_NODE:
+      ast->args.args = va_arg(args, node *);
+      ast->args.expr = va_arg(args, node *);
+      break;
+    
+    case FUNCTION_NODE:
+      ast->func.name = va_arg(args, int); 
+      // can add to parser.y
+      // enum {
+      //   DP3 = 0, 
+      //   LIT = 1, 
+      //   RSQ = 2
+      // };
+      ast->func.args = va_arg(args, node *);
+      break;
+
+    case IF_STATEMENT_NODE:
+      ast->if_stmt.cond_expr = va_arg(args, node *);
+      ast->if_stmt.then_stmt = va_arg(args, node *);
+      ast->if_stmt.else_stmt = va_arg(args, node *);
+      break;
 
 		default:
-			break;
+		  break;
 	}
 
 	va_end(args);
