@@ -85,22 +85,22 @@ node *ast_allocate(node_kind kind, ...)
 
     case INT_NODE:
       ast->type.is_const = 1;
-      ast->type.type_code = INT;
+      ast->type.type_token = INT;
       ast->type.vec_size = 1;
       ast->int_val = va_arg(args, int);
       break;
 
     case FLOAT_NODE:
       ast->type.is_const = 1;
-      ast->type.type_code = FLOAT;
+      ast->type.type_token = FLOAT;
       ast->type.vec_size = 1;
       ast->float_val = (float) va_arg(args, double);
       break;
     
     case TYPE_NODE:
-      ast->type.type_code = va_arg(args, int);
+      ast->type.type_token = va_arg(args, int);
 	    int vec_index = va_arg(args, int);
-	    if(ast->type.type_code == FLOAT || ast->type.type_code == BOOL|| ast->type.type_code == INT)
+	    if(ast->type.type_token == FLOAT || ast->type.type_token == BOOL|| ast->type.type_token == INT)
 		    ast->type.vec_size = 1;
 	    else
 		    ast->type.vec_size = vec_index + 1;
