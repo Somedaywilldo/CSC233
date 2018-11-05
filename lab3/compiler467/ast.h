@@ -38,7 +38,7 @@ typedef enum {
   TYPE_NODE             = (1 << 3) | (1 << 6), //added
 
   IDENT_NODE            = (1 << 2) | (1 << 7),
-  VARIABLE_NODE              = (1 << 2) | (1 << 8),
+  VARIABLE_NODE         = (1 << 2) | (1 << 8),
   FUNCTION_NODE         = (1 << 2) | (1 << 9),
   ARGUMENTS_NODE        = (1 << 3) | (1 << 9), //added
 
@@ -90,7 +90,7 @@ struct node_ {
       int is_const;
       char *id;
       node *type_node;
-      node *expr;
+      node *expr; // optional
     } declaration;
 
     struct {

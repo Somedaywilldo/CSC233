@@ -13,6 +13,10 @@
 #include "parser.tab.h"
 
 #define DEBUG_PRINT_TREE 0
+#define CASE_FPRINT(x,y) {case x: print_tab(depth);fprintf(dumpFile, #y);break;}
+#define CASE_TOKEN_TO_STR(x) {case x: return #x;}
+#define CASE_VEC_TOKEN_TO_STR(x) {case x: char str[6]; sprintf(str, ""#x"%d",type->vec_size); return str; }
+
 
 node *ast = NULL;
 
@@ -148,13 +152,251 @@ node *ast_allocate(node_kind kind, ...)
 	return ast;
 }
 
+
+void print_tab(int x){
+  int i;
+  for(i=0;i<x;i++)
+    fprintf(dumpFile, "\t");
+}
+
+
+const char* type_to_str(){
+  switch(type->type_token) {
+    CASE_TOKEN_TO_STR(BOOL)
+    CASE_TOKEN_TO_STR(INT)
+    CASE_TOKEN_TO_STR(FLOAT)
+    CASE_VEC_TOKEN_TO_STR(BVEC)
+    CASE_VEC_TOKEN_TO_STR(IVEC)
+    CASE_VEC_TOKEN_TO_STR(VEC)
+    default:
+      return "ANY";
+  }
+}
+
+const char *op_to_str(int op) {
+  switch(op) {
+    CASE_TOKEN_TO_STR(-);
+    CASE_TOKEN_TO_STR(!);
+    case AND:
+      return "&&";
+    case OR:
+      return "||";
+    case EQ:
+      return "==";
+    case NEQ:
+      return "!=";
+    CASE_TOKEN_TO_STR(<);
+    case LEQ:
+      return "<=";
+    CASE_TOKEN_TO_STR(>);
+    case GEQ:
+      return ">=";
+    CASE_TOKEN_TO_STR(+);
+    CASE_TOKEN_TO_STR(*);
+    CASE_TOKEN_TO_STR(/);
+    CASE_TOKEN_TO_STR(^);
+    default:
+      return "";
+  }
+}
+
+const char* func_to_str(int token){
+  switch(token) {
+    CASE_TOKEN_TO_STR(DP3);
+    CASE_TOKEN_TO_STR(RSQ);
+    CASE_TOKEN_TO_STR(LIT);
+    default:
+      return "";
+  }
+}
+
+void ast_print_node(node *ast, int depth){
+  switch(ast->kind){
+    CASE_FPRINT(SCOPE_NODE, SCOPE)
+    CASE_FPRINT(DECLARATIONS_NODE, DECLARATIONS)
+    CASE_FPRINT(STATEMENTS_NODE, STATEMENTS)
+
+    case DECLARATION_NODE:
+      print_tab(depth);
+      fprintf(dumpFile, "DECLARATION %s", ast->declaration.id); 
+      //type and expr is another two node
+      break;
+
+    case UNARY_EXPRESION_NODE:
+      print_tab(depth);
+      fprintf(dumpFile, "UNARY %s %s", type_to_str(&ast->type), op_to_str(ast->unary_expr.op));
+      break;
+
+    case BINARY_EXPRESION_NODE:
+      print_tab(depth);
+      fprintf(dumpFile, "BINARY %s %s", type_to_str(&ast->type), op_to_str(ast->binary_expr.op));
+      break;
+
+    case VARIABLE_NODE:
+      fprintf(dumpFile, " ");
+      if (ast->variable.is_array) {
+        fprintf(dumpFile, "INDEX %s %s %d", type_to_str(&ast->type), ast->var_node.id, ast->var_node.index);
+      } 
+      else {
+        fprintf(dumpFile, "%s", cur->var_node.id);
+      }
+      break;
+
+    case NESTED_EXPRESSION_NODE:
+      break;
+    
+    case NESTED_EXPRESSION_NODE:
+      break;
+
+    case BOOL_NODE:
+      fprintf(dumpFile, " %s", (ast->bool_val == 1) ? "true" : "false");
+      break;
+
+    case INT_NODE:
+      fprintf(dumpFile, " %d", ast->int_val);
+      break;
+
+    case FLOAT_NODE:
+      fprintf(dumpFile, " %f", ast->float_val);
+      break;
+
+    case TYPE_NODE:
+      fprintf(dumpFile, " %s", type_to_str(&ast->type));
+      break;
+    
+    case ASSIGNMENT_NODE:
+      print_tab(depth);
+      fprintf(dumpFile, "ASSIGNMENT %s", type_to_str(&ast->assignment.type));
+      break;
+    
+    CASE_FPRINT(CONSTRUCTOR_NODE, CALL)
+
+    case ARGUMENTS_NODE:
+      break;
+    
+    case FUNCTION_NODE:
+      print_tab(depth);
+      fprintf(dumpFile, "CALL %s", func_to_str(ast->func.name));
+      break;
+
+    CASE_FPRINT(IF_STATEMENT_NODE, IF)
+
+    default break;
+  }
+}
+
+void ast_free_node(node *ast) {
+	if(ast->kind == DECLARATION_NODE)
+		free(ast->declaration.id);
+	else if(ast->kind == VARIABLE_NODE)
+		free(ast->var_node.id);
+	free(ast);
+}
+
+void ast_dfs(node *ast, int depth, int is_print)
+{
+  if(is_print){
+    ast_print_node(ast, depth);
+  }
+  switch (ast->kind)
+  {
+    case SCOPE_NODE:
+      ast_dfs(ast->scope.declarations, depth+1, is_print);
+      ast_dfs(ast->scope.stmts, depth+1, is_print);
+      break;
+
+    case DECLARATIONS_NODE:
+      ast_dfs(ast->declarations.declarations, depth+1, is_print);
+      ast_dfs(ast->declarations.declaration, depth+1, is_print);
+      break;
+
+    case STATEMENTS_NODE:
+      ast_dfs(ast->stmts.stmts, depth+1, is_print);
+      ast_dfs(ast->stmts.stmt, depth+1, is_print);
+      break;
+
+    case DECLARATION_NODE:
+      ast_dfs(ast->declaration.type_node, depth+1, is_print);
+      if(ast->declaration.expr){
+        ast_dfs(ast->declaration.expr, depth+1, is_print);
+      }
+      break;
+
+    case UNARY_EXPRESSION_NODE:
+      ast_dfs(ast->unary_expr.right, depth+1, is_print);
+      break;
+    
+    case BINARY_EXPRESSION_NODE:
+      ast_dfs(ast->binary_expr.left, depth+1, is_print);
+      ast_dfs(ast->binary_expr.right, depth+1, is_print);
+      break;
+
+    case VARIABLE_NODE:
+      break;
+    
+    case NESTED_SCOPE_NODE:
+      ast_dfs(ast->nested_scope.scope, depth+1, is_print);
+      break;
+
+    case NESTED_EXPRESSION_NODE:
+      ast_dfs(ast->nested_expr.expr, depth+1, is_print);
+      break;
+    
+    case BOOL_NODE:
+      break;
+
+    case INT_NODE:
+      break;
+
+    case FLOAT_NODE:
+      break;
+    
+    case TYPE_NODE:
+      break;
+    
+    case ASSIGNMENT_NODE:
+      ast_dfs(ast->assignment.variable, depth+1, is_print);
+      ast_dfs(ast->assignment.expr, depth+1, is_print);
+      break;
+
+    case CONSTRUCTOR_NODE:
+      ast_dfs(ast->constructor.type_node, depth+1, is_print);
+      ast_dfs(ast->constructor.args, depth+1, is_print);
+      break;
+  
+    case ARGUMENTS_NODE:
+      ast_dfs(ast->args.args, depth+1, is_print);
+      ast_dfs(ast->args.expr, depth+1, is_print);
+      break;
+    
+    case FUNCTION_NODE:
+      ast_dfs(ast->func.args, depth+1, is_print);
+      break;
+
+    case IF_STATEMENT_NODE:
+      ast_dfs(ast->if_stmt.cond_expr, depth+1, is_print);
+      ast_dfs(ast->if_stmt.then_stmt, depth+1, is_print);
+      if(ast->if_stmt.else_stmt){
+        ast_dfs(ast->if_stmt.else_stmt, depth+1, is_print);
+      }
+      break;
+
+    default:
+      break;
+  }
+  if(!is_print){
+    ast_free_node(ast);
+  }
+}
+
+
 void ast_free(node *ast)
 {
-	
+  ast_dfs(ast, 0, 0);
 }
+
 
 void ast_print(node *ast)
 {
-	// ast_traversal(ast, print_node_pre, print_node_post);
-    printf("THIS IS HARD!\n");
+  ast_dfs(ast, 0, 1);
 }
