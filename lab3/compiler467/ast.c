@@ -51,7 +51,7 @@ node *ast_allocate(node_kind kind, ...)
       ast->declaration.expr = va_arg(args, node *);        
       break;
 
-    case UNARY_EXPRESION_NODE:
+    case UNARY_EXPRESSION_NODE:
 			ast->unary_expr.op = va_arg(args, int);
 			ast->unary_expr.right = va_arg(args, node *);
 			break;
