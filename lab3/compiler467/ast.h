@@ -48,18 +48,24 @@ typedef enum {
   OPTIONAL_STATEMENT_NODE=(1 << 2) | (1 << 12), //added
   STATEMENTS_NODE       = (1 << 1) | (1 << 12), //added
 
-
-
   IF_STATEMENT_NODE     = (1 << 1) | (1 << 11),
   // WHILE_STATEMENT_NODE  = (1 << 1) | (1 << 12),
   ASSIGNMENT_NODE       = (1 << 1) | (1 << 13),
   NESTED_SCOPE_NODE     = (1 << 1) | (1 << 14),
   NESTED_EXPRESSION_NODE= (1 << 2) | (1 << 14), //added
 
-
   DECLARATION_NODE      = (1 << 15),
   DECLARATIONS_NODE     = (1 << 1) | (1 << 15)  //added
 } node_kind;
+
+
+//time enum
+
+struct type_attribute {
+  int type_token;
+  int vec;
+  int is_const;
+};
 
 struct node_ {
 
@@ -67,33 +73,32 @@ struct node_ {
   node_kind kind;
 
   union {
-    // struct {
-    //   node *declarations;
-    //   node *statements;
-    // } scope;
+    struct {
+      node *declarations;
+      node *statements;
+    } scope;
 
-    // struct{
-    //   node *scope;
-    // } nested_scope;
+    struct{
+      node *declartions;
+      node *declartion;
+    } declarations;
+    
+    struct{
+      node *stmts;
+      node *stmt;
+    } stmts;
 
-    // struct{
-    //   node *declartions;
-    //   node *declartion;
-    // } declarations;
+    struct{
+      int is_const;
+      char *id;
+      node *type;
+      node *expr;
+    } declaration;
 
-    // struct{
-    //   int is_const;
-    //   char *id;
-    //   node *type;
-    //   node *expr;
-    // } declaration;
-
-    // expressions?????
-
-    // struct {
-    //   int op;
-    //   node *right;
-    // } unary_expr;
+    struct {
+      int op;
+      node *right;
+    } unary_expr;
 
     struct {
       int op;
@@ -101,59 +106,53 @@ struct node_ {
       node *right;
     } binary_expr;
 
-    // TODO: add more type of nodes
-    // bool bool_val;
-    // int int_val;
-    // float float_val;
-   
-    //type_node????
-    // struct {
-    //   # int is_const
-    //   int is_vec;
-    // } type;
+    struct {
+      char* id;
+      int is_array;
+      int index;
+    } variable;
 
-    // struct {
-    //   char* id;
-    //   //where <identifier> the exact name of the variable.
-    // } ident;
+    // Don't know if necessary
+    struct{
+       node *scope;
+    } nested_scope;
+    // Don't know if necessary
+    struct{
+       node *expr;
+    } nested_expr;
 
-    // struct {
-    //   node* type;
-    //   char* id; 
-    // } var;
+    int bool_val;
+    int int_val;
+    float float_val;
 
-    // struct {
-    //   int name;
-    //   node *args;
-    // } func;
+    struct {
+      node *type; // XX
+      node *variable;
+      node *expr;
+    } assignment;
 
-    // # struct{
+    // TODO: add more type of node
+    struct{
+      node *type;
+      node *args;
+    } constructor;
 
-    // } constructor;
+    struct {
+      node *args;
+      node *expr;
+    } args;
 
-    // struct{
-      
-    // } stmt;
+    struct {
+      int name;
+      node *args;
+    } func;
 
-    // struct{
-    //   node *stmts;
-    //   node *stmt;
-    // } stmts;
+    struct{
+      node *cond_expr;
+      node *then_stmt;
+      node *else_stmt; //optional
+    } if_stmt;
 
-    // struct{
-    //   node *cond;
-    //   node *then_stmt;
-    //   node *else_stmt;
-    // } if_stmt;
-
-    // struct{
-    //   # struct type_s type;
-    //   node *variable;
-    //   node *expr;
-    // } assignment;
-
-    // struct{
-    // } nested_scope;
   };
 };
 
