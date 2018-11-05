@@ -222,10 +222,10 @@ expression
   /* unary opterators */
   | '-' expression %prec UMINUS
       { yTRACE("expression -> - expression \n") 
-      	$$ = ast_allocate(UNARY_EXPRESION_NODE, '-', $2); }
+      	$$ = ast_allocate(UNARY_EXPRESSION_NODE, '-', $2); }
   | '!' expression %prec '!'
       { yTRACE("expression -> ! expression \n") 
-      	$$ = ast_allocate(UNARY_EXPRESION_NODE, '!', $2); }
+      	$$ = ast_allocate(UNARY_EXPRESSION_NODE, '!', $2); }
 
   /* binary operators */
   | expression AND expression %prec AND
