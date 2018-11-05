@@ -288,7 +288,7 @@ void ast_print_node(node *ast, int depth){
       break;
 
     CASE_FPRINT(IF_STATEMENT_NODE, IF)
-  
+
     default:
       break;
   }
@@ -304,6 +304,8 @@ void ast_free_node(node *ast) {
 
 void ast_dfs(node *ast, int depth, int is_print)
 {
+  if(ast==NULL)
+    return;
   if(is_print){
     ast_print_node(ast, depth);
   }
