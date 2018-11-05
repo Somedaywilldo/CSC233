@@ -288,7 +288,7 @@ void ast_print_node(node *ast, int depth){
       break;
 
     CASE_FPRINT(IF_STATEMENT_NODE, IF)
-
+  
     default:
       break;
   }
