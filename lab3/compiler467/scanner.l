@@ -1,9 +1,10 @@
 %{
-    /**********************************************************************
-     *  Yihang Yin 1005644144 yinyiha2 yihangmichael.yin@mail.utoronto.ca
-     *  Mingdong Li 1000529617 limingdo mingdong.li@mail.utoronto.ca
-     *  Interface to the scanner module for CSC467 course project
-     **********************************************************************/
+/**********************************************************************
+ *
+ * **YOUR GROUP INFO SHOULD GO HERE**
+ *
+ *  Interface to the scanner module for CSC467 course project
+ **********************************************************************/
 
 #include <stdlib.h>
 #include <limits.h>
@@ -12,13 +13,14 @@
 #include <string.h>
 
 #include "common.h"
+#include "ast.h"
 #include "parser.tab.h"
 
 #define YY_USER_INIT { yyin = inputFile; }
 #define yyinput      input
 #define yTRACE(x)    { if (traceScanner) fprintf(traceFile, "TOKEN %3d : %s\n", x, yytext); }
 #define yERROR(x)    { fprintf(errorFile, "\nLEXICAL ERROR, LINE %d: %s\n", yyline, x); errorOccurred = TRUE; }
-#define yRET_TRACE(x)      { yTRACE(x); return x; }
+#define yOUT(x)      { yTRACE(x); return x; }
 
 /* forward declarations */
 int ParseComment(void);
@@ -38,72 +40,43 @@ int yyline = 1;
 \r?\n                         { yyline++; }
 <<EOF>>                       { yyterminate(); }
 
-","			                      { yRET_TRACE(','); }
-"+"	                          { yRET_TRACE('+'); }
-"-"	                          { yRET_TRACE('-'); }
-"*"	                          { yRET_TRACE('*'); }
-"/"	                          { yRET_TRACE('/'); }
-"^"	                          { yRET_TRACE('^'); }
+[+\-*/\^]                     { yOUT(yytext[0]); }
+[()[\]{}]                     { yOUT(yytext[0]); }
+[<>=!]                        { yOUT(yytext[0]); }
+";"                           { yOUT(yytext[0]); }
+","                           { yOUT(yytext[0]); }
+"&&"                          { yOUT(AND); }
+"||"                          { yOUT(OR); }
+"!="                          { yOUT(NEQ); }
+"<="                          { yOUT(LEQ); }
+">="                          { yOUT(GEQ); }
+"=="                          { yOUT(EQ); }
 
-"("	                          { yRET_TRACE('('); }
-")"	                          { yRET_TRACE(')'); }
-"["	                          { yRET_TRACE('['); }
-"]"	                          { yRET_TRACE(']'); }
-"{"	                          { yRET_TRACE('{'); }
-"}"	                          { yRET_TRACE('}'); }
+const                         { yOUT(CONST); }
+bool                          { yOUT(BOOL_T); }
+int                           { yOUT(INT_T); }
+float                         { yOUT(FLOAT_T); }
+vec(2|3|4)                    { yylval.as_vec = yytext[3] - '1'; yOUT(VEC_T); }
+ivec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(IVEC_T); }
+bvec(2|3|4)                   { yylval.as_vec = yytext[4] - '1'; yOUT(BVEC_T); }
 
-"<"	                          { yRET_TRACE('<'); }
-">"	                          { yRET_TRACE('>'); }
-"="	                          { yRET_TRACE('='); }
-"!"	                          { yRET_TRACE('!'); }
+if                            { yOUT(IF); }
+else                          { yOUT(ELSE); }
 
-";"	                          { yRET_TRACE(';'); }
+dp3                           { yylval.as_func = 0; yOUT(FUNC); }
+rsq                           { yylval.as_func = 2; yOUT(FUNC); }
+lit                           { yylval.as_func = 1; yOUT(FUNC); }
 
-"&&"                          { yRET_TRACE(AND); }
-"||"                          { yRET_TRACE(OR); }
-"!="                          { yRET_TRACE(NEQ); }
-"<="                          { yRET_TRACE(LEQ); }
-">="                          { yRET_TRACE(GEQ); }
-"=="                          { yRET_TRACE(EQ); }
+true                          { yOUT(TRUE_C); }
+false                         { yOUT(FALSE_C); }
 
-if                            { yRET_TRACE(IF); }
-else                          { yRET_TRACE(ELSE); }
-while                         { yRET_TRACE(WHILE); }
+0                             { yylval.as_int = 0; yOUT(INT_C); }                  
+[1-9][0-9]*                   { if(ParseInt()) { yOUT(INT_C); } yyterminate(); }
 
-const                         { yRET_TRACE(CONST); }
-bool                          { yRET_TRACE(BOOL); }
-int                           { yRET_TRACE(INT); }
-float                         { yRET_TRACE(FLOAT); }
+(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
+\.[0-9]+                      { if(ParseFloat()) { yOUT(FLOAT_C); } yyterminate(); }
 
-ivec2   											{ yylval.vec_size = 1; yRET_TRACE(IVEC); }
-ivec3   											{ yylval.vec_size = 2; yRET_TRACE(IVEC); }
-ivec4   											{ yylval.vec_size = 3; yRET_TRACE(IVEC); }
-
-vec2    											{ yylval.vec_size = 1; yRET_TRACE(VEC); }
-vec3    											{ yylval.vec_size = 2; yRET_TRACE(VEC); }
-vec4    											{ yylval.vec_size = 3; yRET_TRACE(VEC); }
-
-bvec2   											{ yylval.vec_size = 1; yRET_TRACE(BVEC); }
-bvec3   											{ yylval.vec_size = 2; yRET_TRACE(BVEC); }
-bvec4   											{ yylval.vec_size = 3; yRET_TRACE(BVEC); }
-
-true                          { yRET_TRACE(TRUE_V); }
-false                         { yRET_TRACE(FALSE_V); }
-
-dp3                           { yRET_TRACE(DP3); }
-rsq                           { yRET_TRACE(RSQ); }
-lit                           { yRET_TRACE(LIT); }
-
-0                             { yylval.int_val = 0; yRET_TRACE(INT_V); }                  
-[1-9][0-9]*                   { if(ParseInt()) { yRET_TRACE(INT_V); } yyterminate(); }
-
-(0|([1-9][0-9]*))\.[0-9]*     { if(ParseFloat()) { yRET_TRACE(FLOAT_V); } yyterminate(); }
-\.[0-9]+                      { if(ParseFloat()) { yRET_TRACE(FLOAT_V); } yyterminate(); }
-
-[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yRET_TRACE(ID); } yyterminate(); }
-
-
-
+[A-Za-z_][A-Za-z0-9_]*        { if(ParseIdent()) { yOUT(ID); } yyterminate(); }
 
 0[0-9]+                       { yERROR("Octal numbers are not allowed.");  yyterminate(); }
 [0-9]+[a-zA-Z_]+              { yERROR("Integers and identifiers/keywords must be separated by whitespace.");  yyterminate(); }
@@ -156,7 +129,7 @@ int ParseInt(void) {
     return 0;
   }
 
-  yylval.int_val = (int) num;
+  yylval.as_int = (int) num;
   return 1;
 }
 
@@ -183,7 +156,7 @@ int ParseFloat(void) {
     return 0;
   }  
 
-  yylval.float_val = (float) num;
+  yylval.as_float = (float) num;
   return 1;
 }
 
@@ -197,7 +170,7 @@ int ParseIdent(void) {
   char *ident = (char *) calloc(yyleng + 1, sizeof(char));
   memcpy(ident, yytext, yyleng);
 
-  yylval.str_val = ident;
+  yylval.as_str = ident;
   return 1; 
 }
 

@@ -82,21 +82,21 @@ node *ast_allocate(node_kind kind, ...)
     
     case BOOL_NODE:
       ast->type.is_const = 1;
-      ast->type.type_token = BOOL;
+      ast->type.type_token = BOOL_T;
       ast->type.vec_size = 1;
       ast->bool_val = va_arg(args, int);
 	    break;
 
     case INT_NODE:
       ast->type.is_const = 1;
-      ast->type.type_token = INT;
+      ast->type.type_token = INT_T;
       ast->type.vec_size = 1;
       ast->int_val = va_arg(args, int);
       break;
 
     case FLOAT_NODE:
       ast->type.is_const = 1;
-      ast->type.type_token = FLOAT;
+      ast->type.type_token = FLOAT_T;
       ast->type.vec_size = 1;
       ast->float_val = (float) va_arg(args, double);
       break;
@@ -104,7 +104,7 @@ node *ast_allocate(node_kind kind, ...)
     case TYPE_NODE:{
       ast->type.type_token = va_arg(args, int);
 	    int vec_index = va_arg(args, int);
-	    if(ast->type.type_token == FLOAT || ast->type.type_token == BOOL|| ast->type.type_token == INT)
+	    if(ast->type.type_token == FLOAT_T || ast->type.type_token == BOOL_T|| ast->type.type_token == INT_T)
 		    ast->type.vec_size = 1;
 	    else
 		    ast->type.vec_size = vec_index + 1;
@@ -128,12 +128,6 @@ node *ast_allocate(node_kind kind, ...)
     
     case FUNCTION_NODE:
       ast->func.name = va_arg(args, int); 
-      // can add to parser.y
-      // enum {
-      //   DP3 = 0, 
-      //   LIT = 1, 
-      //   RSQ = 2
-      // };
       ast->func.args = va_arg(args, node *);
       break;
 
@@ -208,11 +202,14 @@ const char *op_to_str(int op) {
   }
 }
 
-const char* func_to_str(int token){
-  switch(token) {
-    CASE_TOKEN_TO_STR(DP3);
-    CASE_TOKEN_TO_STR(RSQ);
-    CASE_TOKEN_TO_STR(LIT);
+const char* func_to_str(int name){
+  switch(name) {
+    case 0:
+      return "DP3";
+    case 1:
+      return "RSQ";
+    case 2:
+      return "LIT";
     default:
       return "";
   }

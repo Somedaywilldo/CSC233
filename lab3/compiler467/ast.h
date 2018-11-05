@@ -155,8 +155,8 @@ struct node_ {
 };
 
 node *ast_allocate(node_kind type, ...);
-void ast_free(node *ast);
-void ast_print(node * ast);
-int semantic_check(node * ast);
+void ast_free(node* ast);
+void ast_print(node* ast);
+int semantic_check(node* ast);
 
 #endif /* AST_H_ */
