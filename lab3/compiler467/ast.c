@@ -243,7 +243,7 @@ void ast_print_node(node *ast, int depth){
     case VARIABLE_NODE:
       fprintf(dumpFile, " ");
       if (ast->variable.is_array) {
-        fprintf(dumpFile, "INDEX %s %s %d", type_to_str(&ast->type), ast->var_node.id, ast->var_node.index);
+        fprintf(dumpFile, "INDEX %s %s %d", type_to_str(&ast->type), ast->variable_node.id, ast->variable_node.index);
       } 
       else {
         fprintf(dumpFile, "%s", ast->variable_node.id);
@@ -297,7 +297,7 @@ void ast_free_node(node *ast) {
 	if(ast->kind == DECLARATION_NODE)
 		free(ast->declaration.id);
 	else if(ast->kind == VARIABLE_NODE)
-		free(ast->var_node.id);
+		free(ast->variable_node.id);
 	free(ast);
 }
 
