@@ -160,7 +160,7 @@ void print_tab(int x){
 }
 
 
-const char* type_to_str(){
+const char* type_to_str(struct type_attribute *type){
   switch(type->type_token) {
     CASE_TOKEN_TO_STR(BOOL)
     CASE_TOKEN_TO_STR(INT)
