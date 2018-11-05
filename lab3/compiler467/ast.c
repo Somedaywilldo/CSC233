@@ -112,7 +112,7 @@ node *ast_allocate(node_kind kind, ...)
       break;
 
     case CONSTRUCTOR_NODE:
-      ast->constructor.type = va_arg(args, node *);
+      ast->constructor.type_node = va_arg(args, node *);
       ast->constructor.args = va_arg(args, node *);
       break;
   
