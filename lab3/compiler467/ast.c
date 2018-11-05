@@ -47,7 +47,7 @@ node *ast_allocate(node_kind kind, ...)
     case DECLARATION_NODE:
       ast->declaration.is_const = va_arg(args, int); 
       ast->declaration.id = va_arg(args, char *);  
-      ast->declaration.type = va_arg(args, node *);        
+      ast->declaration.type_node = va_arg(args, node *);        
       ast->declaration.expr = va_arg(args, node *);        
       break;
 
@@ -81,7 +81,7 @@ node *ast_allocate(node_kind kind, ...)
       ast->type.type_token = BOOL;
       ast->type.vec_size = 1;
       ast->bool_val = va_arg(args, int);
-	  break;
+	    break;
 
     case INT_NODE:
       ast->type.is_const = 1;
@@ -107,7 +107,6 @@ node *ast_allocate(node_kind kind, ...)
 	  break;
     
     case ASSIGNMENT_NODE:
-      ast->assignment.type = va_arg(args, node *);
       ast->assignment.variable = va_arg(args, node *);
       ast->assignment.expr = va_arg(args, node *);
       break;

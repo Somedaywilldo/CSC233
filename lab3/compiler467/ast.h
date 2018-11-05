@@ -58,11 +58,17 @@ typedef enum {
   DECLARATIONS_NODE     = (1 << 1) | (1 << 15)  //added
 } node_kind;
 
+struct type_attribute {
+  int type_token;
+  int vec_size;
+  int is_const; 
+};
 
 struct node_ {
 
   // an example of tagging each node with a type
   node_kind kind;
+  struct type_attribute type;
 
   union {
     struct {
@@ -83,7 +89,7 @@ struct node_ {
     struct{
       int is_const;
       char *id;
-      node *type;
+      node *type_node;
       node *expr;
     } declaration;
 
@@ -118,20 +124,14 @@ struct node_ {
     float float_val;
 
     struct {
-      int type_attribute;
-      int vec_size;
-      int is_const; 
-    } type;
-
-    struct {
-      node *type; // XX
+      struct type_attribute type; // XX
       node *variable;
       node *expr;
     } assignment;
 
     // TODO: add more type of node
     struct{
-      node *type;
+      node *type_node;
       node *args;
     } constructor;
 
