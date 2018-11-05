@@ -75,17 +75,17 @@ bool                          { yRET_TRACE(BOOL); }
 int                           { yRET_TRACE(INT); }
 float                         { yRET_TRACE(FLOAT); }
 
-ivec2   											{ yylval.vec = 1; yRET_TRACE(IVEC); }
-ivec3   											{ yylval.vec = 2; yRET_TRACE(IVEC); }
-ivec4   											{ yylval.vec = 3; yRET_TRACE(IVEC); }
+ivec2   											{ yylval.vec_size = 1; yRET_TRACE(IVEC); }
+ivec3   											{ yylval.vec_size = 2; yRET_TRACE(IVEC); }
+ivec4   											{ yylval.vec_size = 3; yRET_TRACE(IVEC); }
 
-vec2    											{ yylval.vec = 1; yRET_TRACE(VEC); }
-vec3    											{ yylval.vec = 2; yRET_TRACE(VEC); }
-vec4    											{ yylval.vec = 3; yRET_TRACE(VEC); }
+vec2    											{ yylval.vec_size = 1; yRET_TRACE(VEC); }
+vec3    											{ yylval.vec_size = 2; yRET_TRACE(VEC); }
+vec4    											{ yylval.vec_size = 3; yRET_TRACE(VEC); }
 
-bvec2   											{ yylval.vec = 1; yRET_TRACE(BVEC); }
-bvec3   											{ yylval.vec = 2; yRET_TRACE(BVEC); }
-bvec4   											{ yylval.vec = 3; yRET_TRACE(BVEC); }
+bvec2   											{ yylval.vec_size = 1; yRET_TRACE(BVEC); }
+bvec3   											{ yylval.vec_size = 2; yRET_TRACE(BVEC); }
+bvec4   											{ yylval.vec_size = 3; yRET_TRACE(BVEC); }
 
 true                          { yRET_TRACE(TRUE_V); }
 false                         { yRET_TRACE(FALSE_V); }
