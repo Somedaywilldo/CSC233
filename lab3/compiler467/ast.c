@@ -250,7 +250,7 @@ void ast_print_node(node *ast, int depth){
       }
       break;
 
-    case NESTED_EXPRESSION_NODE:
+    case NESTED_SCOPE_NODE:
       break;
     
     case NESTED_EXPRESSION_NODE:
