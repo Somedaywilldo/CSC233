@@ -154,18 +154,59 @@ void print_tab(int x){
 }
 
 
-const char* type_to_str(struct type_attribute *type){
+// const char* type_to_str(struct type_attribute *type){
+//   switch(type->type_token) {
+//     CASE_TOKEN_TO_STR(BOOL_T)
+//     CASE_TOKEN_TO_STR(INT_T)
+//     CASE_TOKEN_TO_STR(FLOAT_T)
+//     CASE_VEC_TOKEN_TO_STR(BVEC_T)
+//     CASE_VEC_TOKEN_TO_STR(IVEC_T)
+//     CASE_VEC_TOKEN_TO_STR(VEC_T)
+//     default:
+//       return "ANY";
+//   }
+// }
+
+const char *type_to_str(struct type_attribute *type) {
   switch(type->type_token) {
-    CASE_TOKEN_TO_STR(BOOL)
-    CASE_TOKEN_TO_STR(INT)
-    CASE_TOKEN_TO_STR(FLOAT)
-    CASE_VEC_TOKEN_TO_STR(BVEC)
-    CASE_VEC_TOKEN_TO_STR(IVEC)
-    CASE_VEC_TOKEN_TO_STR(VEC)
+    case FLOAT_T:
+      return "FLOAT";
+    case INT_T:
+      return "INT";
+    case BOOL_T:
+      return "BOOL";
+    case BVEC_T:
+      switch(type->vec_size){
+        case 2:
+          return "BVEC2";
+        case 3:
+          return "BVEC3";
+        case 4:
+          return "BVEC4";
+      }
+    case IVEC_T:
+      switch(type->vec_size){
+        case 2:
+          return "IVEC2";
+        case 3:
+          return "IVEC3";
+        case 4:
+          return "IVEC4";
+      }
+    case VEC_T:
+      switch(type->vec_size){
+        case 2:
+          return "VEC2";
+        case 3:
+          return "VEC3";
+        case 4:
+          return "VEC4";
+      }
     default:
       return "ANY";
   }
 }
+
 
 const char *op_to_str(int op) {
   switch(op) {
