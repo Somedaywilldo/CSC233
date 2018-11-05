@@ -282,22 +282,22 @@ expression
       { yTRACE("expression -> FLOAT_C \n") 
       	$$ = ast_allocate(FLOAT_NODE, (double) $1); }
 
-  /* misc */
+  /* misc  $$ = ast_allocate(EXP_VAR_NODE, $1); }*/
   | '(' expression ')'
       { yTRACE("expression -> ( expression ) \n")
       	$$ = ast_allocate(NESTED_EXPRESSION_NODE, $2); }
   | variable
     { 	yTRACE("expression -> variable \n") 
-    	$$ = ast_allocate(EXP_VAR_NODE, $1); }
+		$$ = ast_allocate(EXPRESSION_NODE, $1); }
   ;
 
 variable
   : ID
       { yTRACE("variable -> ID \n")
-      	$$ = ast_allocate(VAR_NODE, $1, 0, 0); }
+      	$$ = ast_allocate(VARIABLE_NODE, $1, 0, 0); }
   | ID '[' INT_C ']' %prec '['
       { yTRACE("variable -> ID [ INT_C ] \n")
-      	$$ = ast_allocate(VAR_NODE, $1, 1, $3); }
+      	$$ = ast_allocate(VARIABLE_NODE, $1, 1, $3); }
   ;
 
 arguments
