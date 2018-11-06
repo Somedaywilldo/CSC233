@@ -6,10 +6,6 @@
         b=true;
         b=b^b;
     }
-    vec4 d;
-    ivec3 e;
-    vec4 lit(d);
-    float dp3(d,d);
-    int dp3(e,e);
-    float rsq(int);
+    vec4 d = gl_Color;
+    lit(d);
 }
