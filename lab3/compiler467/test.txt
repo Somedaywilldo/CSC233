@@ -6,6 +6,4 @@
         b=true;
         b=b^b;
     }
-    vec4 d = gl_Color;
-    lit(d);
 }
