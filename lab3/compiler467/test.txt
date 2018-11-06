@@ -1,3 +1,10 @@
 {
     int a=1;
+    bool b;
+    a = a+1;
+    if(a){
+        b=true;
+        b=b^b;
+    }
+    DP3();
 }
