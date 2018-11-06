@@ -151,9 +151,10 @@ node *ast_allocate(node_kind kind, ...)
 
 void print_tab(int x, int is_open){
   int i;
+  fprintf(dumpFile, "\n");
   for(i=0;i<x;i++)
     fprintf(dumpFile, "\t");
-  fprintf(dumpFile, is_open ? "(" : ")\n");
+  fprintf(dumpFile, is_open ? "(" : ")");
 }
 
 
