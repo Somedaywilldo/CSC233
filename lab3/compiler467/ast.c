@@ -315,7 +315,7 @@ void ast_print_node(node *ast, int depth){
     
     case ASSIGNMENT_NODE:
       print_tab(depth, 1);
-      fprintf(dumpFile, "ASSIGNMENT %s", type_to_str(&ast->assignment.variable.type));
+      fprintf(dumpFile, "ASSIGNMENT %s", type_to_str(&ast->assignment.variable->type));
       break;
     
     CASE_FPRINT(CONSTRUCTOR_NODE, CALL)
