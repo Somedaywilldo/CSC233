@@ -108,6 +108,7 @@ struct node_ {
       char* id;
       int is_array;
       int index;
+      struct type_attribute type; // XX
     } variable;
 
     // Don't know if necessary
@@ -124,7 +125,7 @@ struct node_ {
     float float_val;
 
     struct {
-      struct type_attribute type; // XX
+      // struct type_attribute type; // XX
       node *variable;
       node *expr;
     } assignment;
