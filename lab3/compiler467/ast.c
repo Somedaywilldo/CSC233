@@ -531,4 +531,5 @@ void ast_free(node *ast)
 void ast_print(node *ast)
 {
   ast_dfs(ast, 0, 1);
+  fprintf(dumpFile, "\n");
 }

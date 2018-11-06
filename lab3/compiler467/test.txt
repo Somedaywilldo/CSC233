@@ -2,7 +2,7 @@
     int a=1;
     bool b;
     a = a+1;
-    if(a){
+    if(a==1){
         b=true;
         b=b^b;
     }
