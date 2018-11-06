@@ -153,7 +153,7 @@ void print_tab(int x, int is_open){
   int i;
   fprintf(dumpFile, "\n");
   for(i=0;i<x;i++)
-    fprintf(dumpFile, "\t");
+    fprintf(dumpFile, "  ");
   fprintf(dumpFile, is_open ? "(" : ")");
 }
 
