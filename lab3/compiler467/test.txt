@@ -6,8 +6,10 @@
         b=true;
         b=b^b;
     }
-    vec4 lit(vec4);
-    float dp3(vec4,vec4);
-    int dp3(ivec3,ivec3);
+    vec4 d;
+    ivec3 e;
+    vec4 lit(d);
+    float dp3(d,d);
+    int dp3(e,e);
     float rsq(int);
 }
