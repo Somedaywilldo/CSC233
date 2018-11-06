@@ -13,7 +13,9 @@
 #include "parser.tab.h"
 
 #define DEBUG_PRINT_TREE 0
-#define CASE_FPRINT(x,y) {case x: print_tab(depth);fprintf(dumpFile, #y);break;}
+#define CASE_FPRINT(x,y) {case x: print_tab(depth,1);fprintf(dumpFile, #y);break;}
+//#define CASE_FPRINT(x,y) {case x: fprintf(dumpFile, #y);break;}
+
 #define CASE_TOKEN_TO_STR(x) {case x: return #x;}
 #define CASE_VEC_TOKEN_TO_STR(x) {case x: char str[6]; sprintf(str, ""#x"%d",type->vec_size); return str; }
 
@@ -147,10 +149,11 @@ node *ast_allocate(node_kind kind, ...)
 }
 
 
-void print_tab(int x){
+void print_tab(int x, int is_open){
   int i;
   for(i=0;i<x;i++)
     fprintf(dumpFile, "\t");
+  fprintf(dumpFile, is_open ? "(" : ")");
 }
 
 
@@ -207,7 +210,6 @@ const char *type_to_str(struct type_attribute *type) {
   }
 }
 
-
 const char *op_to_str(int op) {
   switch(op) {
     case '-':
@@ -262,19 +264,19 @@ void ast_print_node(node *ast, int depth){
     CASE_FPRINT(DECLARATIONS_NODE, DECLARATIONS)
     CASE_FPRINT(STATEMENTS_NODE, STATEMENTS)
 
+    //type and expr is another two node
     case DECLARATION_NODE:
-      print_tab(depth);
+      print_tab(depth, 1);
       fprintf(dumpFile, "DECLARATION %s", ast->declaration.id); 
-      //type and expr is another two node
       break;
 
     case UNARY_EXPRESSION_NODE:
-      print_tab(depth);
+      print_tab(depth, 1);
       fprintf(dumpFile, "UNARY %s %s", type_to_str(&ast->type), op_to_str(ast->unary_expr.op));
       break;
 
     case BINARY_EXPRESSION_NODE:
-      print_tab(depth);
+      print_tab(depth, 1);
       fprintf(dumpFile, "BINARY %s %s", type_to_str(&ast->type), op_to_str(ast->binary_expr.op));
       break;
 
@@ -311,7 +313,7 @@ void ast_print_node(node *ast, int depth){
       break;
     
     case ASSIGNMENT_NODE:
-      print_tab(depth);
+      // print_tab(depth);
       fprintf(dumpFile, "ASSIGNMENT %s", type_to_str(&ast->assignment.type));
       break;
     
@@ -321,7 +323,7 @@ void ast_print_node(node *ast, int depth){
       break;
     
     case FUNCTION_NODE:
-      print_tab(depth);
+      print_tab(depth, 1);
       fprintf(dumpFile, "CALL %s", func_to_str(ast->func.name));
       break;
 
@@ -432,6 +434,9 @@ void ast_dfs(node *ast, int depth, int is_print)
 
     default:
       break;
+  }
+  if(is_print){
+    print_tab(depth, 0);
   }
   if(!is_print){
     ast_free_node(ast);
