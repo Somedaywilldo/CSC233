@@ -153,7 +153,7 @@ void print_tab(int x, int is_open){
   int i;
   for(i=0;i<x;i++)
     fprintf(dumpFile, "\t");
-  fprintf(dumpFile, is_open ? "(" : ")");
+  fprintf(dumpFile, is_open ? "(" : ")\n");
 }
 
 
@@ -342,6 +342,83 @@ void ast_free_node(node *ast) {
 	free(ast);
 }
 
+void print_after_dfs(node *ast, int depth)
+{
+  if(ast==NULL)
+    return;
+  switch (ast->kind)
+  {
+    case SCOPE_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case DECLARATIONS_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case STATEMENTS_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case DECLARATION_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case UNARY_EXPRESSION_NODE:
+      print_tab(depth, 0);
+      break;
+    
+    case BINARY_EXPRESSION_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case VARIABLE_NODE:
+      break;
+    
+    case NESTED_SCOPE_NODE:
+      break;
+
+    case NESTED_EXPRESSION_NODE:
+      break;
+    
+    case BOOL_NODE:
+      break;
+
+    case INT_NODE:
+      break;
+
+    case FLOAT_NODE:
+      break;
+    
+    case TYPE_NODE:
+      break;
+    
+    case ASSIGNMENT_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case CONSTRUCTOR_NODE:
+      print_tab(depth, 0);
+      break;
+  
+    case ARGUMENTS_NODE:
+      print_tab(depth, 0);
+      break;
+    
+    case FUNCTION_NODE:
+      print_tab(depth, 0);
+      break;
+
+    case IF_STATEMENT_NODE:
+      print_tab(depth, 0);
+      break;
+
+    default:
+      break;
+  }
+}
+
+
 void ast_dfs(node *ast, int depth, int is_print)
 {
   if(ast==NULL)
@@ -436,7 +513,7 @@ void ast_dfs(node *ast, int depth, int is_print)
       break;
   }
   if(is_print){
-    print_tab(depth, 0);
+    print_after_dfs(ast, depth);
   }
   if(!is_print){
     ast_free_node(ast);
