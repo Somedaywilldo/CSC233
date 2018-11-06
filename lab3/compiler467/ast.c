@@ -13,7 +13,7 @@
 #include "parser.tab.h"
 
 #define DEBUG_PRINT_TREE 0
-#define CASE_FPRINT(x,y) {case x: print_tab(depth,1);fprintf(dumpFile, #y);break;}
+#define CASE_FPRINT(x,y) {case x: print_tab(depth,1);fprintf(dumpFile, ""#y"\n");break;}
 //#define CASE_FPRINT(x,y) {case x: fprintf(dumpFile, #y);break;}
 
 #define CASE_TOKEN_TO_STR(x) {case x: return #x;}
@@ -153,7 +153,7 @@ void print_tab(int x, int is_open){
   int i;
   for(i=0;i<x;i++)
     fprintf(dumpFile, "\t");
-  fprintf(dumpFile, is_open ? "(\n" : ")\n");
+  fprintf(dumpFile, is_open ? "(" : ")");
 }
 
 
